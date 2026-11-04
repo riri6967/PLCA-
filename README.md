@@ -44,6 +44,29 @@ Phases 5-6 (adaptive PLCA vs conventional), about 2-4 minutes:
 python run_adaptive.py
 ```
 
+Real traffic from the ROAD dataset (unzip it to `dataset\road\`):
+
+```
+python run_road.py
+```
+
+## Real traffic: ROAD CAN traces (`run_road.py`, `plca_sim/road.py`)
+
+Replays the attack-free ROAD log `ambient_highway_street_driving_long.log`
+(choose another with `--log`) on the 10BASE-T1S zone. Each CAN frame keeps
+its real timestamp and becomes a 64-byte Ethernet frame; CAN IDs are spread
+over the 8 nodes by load (ROAD's DBC is anonymized, so the sending ECU is
+unknown); the two fastest IDs are treated as safety-critical (2 ms
+deadline); replaying the trace k times with random offsets models a zone
+that aggregates k CAN segments.
+
+* Experiment A: CAN traffic only, 1-8 CAN segments.
+* Experiment B: CAN traffic + 30 % bulk Ethernet with large frames
+  (diagnostics, software updates), 1-4 CAN segments.
+
+The governor uses the largest frame that actually occurs (64 bytes in A), so
+its guarantee stays feasible for many CAN segments.
+
 ## Phase 4: TinyML network-state prediction
 
 * `plca_sim/monitor.py` records 15 cheap features every 5 ms (bus and TO
@@ -127,9 +150,11 @@ plca_sim/
   monitor.py     PLCA monitoring and feature extraction
   tinyml.py      Labelling, decision-tree training, export to C
   adaptive.py    Adaptive policy engine and safety governor
+  road.py        ROAD candump reader and CAN -> 10BASE-T1S trace replay
 run_baseline.py  Runs all scenarios with conventional PLCA and plots results
 run_tinyml.py    Builds the dataset, trains and evaluates the TinyML model
 run_adaptive.py  Compares conventional, governor, reactive and TinyML policies
+run_road.py      Same comparison on real ROAD CAN traffic
 tests/           Sanity checks
 ```
 

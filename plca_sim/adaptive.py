@@ -70,10 +70,13 @@ class SafetyGovernor:
         cfg: PLCAConfig,
         flows: Sequence[CriticalFlow] = (),
         margin: float = 0.95,
+        max_frame_bytes: int = MAX_FRAME_BYTES,
     ) -> None:
+        """`max_frame_bytes` is the largest frame that can occur on the segment
+        (default: maximum Ethernet frame)."""
         self.cfg = cfg
         self.flows = tuple(flows)
-        self.max_frame_bt = cfg.wire_bits(MAX_FRAME_BYTES)
+        self.max_frame_bt = cfg.wire_bits(max_frame_bytes)
         fixed = cfg.beacon_bt + cfg.node_count * cfg.to_timer_bt
         self.crit_limit: dict[int, int] = {}
         self._next_reserved = 0
