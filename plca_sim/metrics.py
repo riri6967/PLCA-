@@ -25,7 +25,12 @@ def summarize(res: SimResult) -> dict[str, float]:
 
     crit = [r for r in recs if r.critical]
     crit_lat_us = us(np.array([r.end - r.arrival for r in crit])) if crit else np.zeros(0)
-    crit_miss = [r for r in crit if r.deadline is not None and r.end - r.arrival > r.deadline]
+    crit_late = sum(1 for r in crit if r.deadline is not None and r.end - r.arrival > r.deadline)
+    # A dropped frame, or one still queued past its deadline, is a miss too:
+    # counting only delivered frames would hide exactly the worst failures.
+    crit_dropped = sum(1 for f in res.dropped if f.critical)
+    crit_missed = crit_late + crit_dropped + res.critical_overdue
+    crit_known = len(crit) + crit_dropped + res.critical_overdue
     noncrit = [r for r in recs if not r.critical]
     noncrit_lat_us = (
         us(np.array([r.end - r.arrival for r in noncrit])) if noncrit else np.zeros(0)
@@ -54,7 +59,8 @@ def summarize(res: SimResult) -> dict[str, float]:
         "critical_frames": len(crit),
         "critical_latency_mean_us": float(np.mean(crit_lat_us)) if len(crit_lat_us) else np.nan,
         "critical_latency_max_us": float(np.max(crit_lat_us)) if len(crit_lat_us) else np.nan,
-        "critical_deadline_miss_rate": len(crit_miss) / len(crit) if crit else np.nan,
+        "critical_dropped": crit_dropped,
+        "critical_deadline_miss_rate": crit_missed / crit_known if crit_known else np.nan,
         "noncritical_latency_mean_us": (
             float(np.mean(noncrit_lat_us)) if len(noncrit_lat_us) else np.nan
         ),

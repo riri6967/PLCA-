@@ -7,7 +7,8 @@ Model (simplified from IEEE 802.3cg clause 148):
     lasts for the frame's bus time. With burst mode / an adaptive policy a node
     may send several frames back to back in one TO.
   * A node with nothing to send lets its TO expire after `to_timer_bt`.
-  * Within a node, critical frames are served before non-critical ones.
+  * Within a node, critical frames are served before non-critical ones, and
+    each class has its own queue (`max_queue` frames per class).
   * A policy may give each cycle a budget for non-critical bus time; a node
     whose next non-critical frame would exceed it defers that frame (it
     stays queued) and ends its TO. All nodes see the bus, so each node can
@@ -54,6 +55,10 @@ class SimResult:
     deferred: int = 0
     # Longest time between the starts of two consecutive TOs of one node.
     max_to_gap_bt: float = 0.0
+    # Critical frames still queued at the end of the run: already past their
+    # deadline (a miss) or not yet (outcome unknown, left out of the miss rate).
+    critical_overdue: int = 0
+    critical_censored: int = 0
 
     @property
     def backlog(self) -> int:
@@ -93,7 +98,8 @@ def simulate(
         while i < len(lst) and lst[i].arrival <= now:
             f = lst[i]
             i += 1
-            if len(q) >= cfg.max_queue:
+            in_class = n_critical[n] if f.critical else len(q) - n_critical[n]
+            if in_class >= cfg.max_queue:
                 res.dropped.append(f)
                 continue
             heapq.heappush(q, (0 if f.critical else 1, f.arrival, next(seq), f))
@@ -177,5 +183,14 @@ def simulate(
         last_cycle = t - cycle_start
         res.cycle_lengths.append(last_cycle)
         cycle += 1
+
+    for n in range(n_nodes):
+        enqueue(n, t)
+        for _, _, _, f in ready[n]:
+            if f.critical and f.deadline is not None:
+                if t - f.arrival > f.deadline:
+                    res.critical_overdue += 1
+                else:
+                    res.critical_censored += 1
 
     return res

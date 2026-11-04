@@ -21,7 +21,9 @@ class PLCAConfig:
     beacon_bt: int = 20
     # PLCA burst mode: extra frames a node may send in one TO (0 = off).
     max_bc: int = 0
-    # Per-node transmit queue limit in frames; extra arrivals are dropped.
+    # Per-node, per-class transmit queue limit in frames; extra arrivals are
+    # dropped. Critical and non-critical frames have separate queues, so a
+    # backlog of non-critical frames can never push out a critical frame.
     max_queue: int = 64
     # Inter-packet gap after each frame.
     ipg_bt: int = 96

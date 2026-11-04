@@ -101,9 +101,15 @@ def periodic_traffic(
 
 @dataclass(frozen=True)
 class CriticalFlow:
-    """A safety-critical periodic flow known at design time."""
+    """A safety-critical flow known at design time.
+
+    `max_in_deadline` is the largest number of its frames that can arrive in
+    any time window of length `deadline_s`. Strictly periodic flows can leave
+    it out (it follows from the period); real flows with jitter must state it.
+    """
 
     node: int
     period_s: float
     size: int  # bytes
     deadline_s: float
+    max_in_deadline: int | None = None

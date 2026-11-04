@@ -98,7 +98,10 @@ PLCA-/
   run_baseline.py    Phase 3: conventional PLCA baseline
   run_tinyml.py      Phase 4: TinyML predictor
   run_adaptive.py    Phases 5-6: conventional vs adaptive
-  run_road.py        real traffic from the ROAD dataset
+  run_road.py        real traffic from the ROAD dataset (all ambient logs)
+  run_road_tinyml.py TinyML trained and tested on real ROAD windows
+  run_tradeoff.py    cost of the guarantee, budget adaptation, sensitivity
+  run_reference_models.py  gradient boosting and oracle reference models
   tests/             automatic checks (python -m unittest)
   results/           outputs (created when you run; not uploaded to GitHub)
   dataset/           downloaded datasets (not uploaded to GitHub)
@@ -148,14 +151,14 @@ ROAD dataset (~0.5 GB zipped, more unzipped), results (< 50 MB).
 
 | Phase | What | Script | Status |
 |---|---|---|---|
-| 1 | Literature review | (you) | to do / in progress |
+| 1 | Literature review | section 3 of the paper | done; check items marked (abstract) or (from memory) |
 | 2 | 10BASE-T1S PLCA network model and traffic scenarios | `plca_sim/` | done |
 | 3 | Conventional PLCA baseline | `run_baseline.py` | done |
 | 4 | TinyML network-state prediction | `run_tinyml.py` | done |
 | 5 | Adaptive policy engine + safety governor | `plca_sim/adaptive.py` | done |
 | 6 | Conventional vs adaptive comparison | `run_adaptive.py` | done (simulation) |
-| 7 | Real traffic (ROAD dataset) | `run_road.py` | built, needs a run on your PC |
-| 8 | Write-up (paper / thesis) | (you + Claude) | to do |
+| 7 | Real traffic (ROAD dataset) | `run_road.py`, `run_road_tinyml.py` | done, all 12 ambient logs |
+| 8 | Write-up (paper / thesis) | [paper](https://claude.ai/artifact/Gp8QCyRSX1jDppPn7tdxH8) | first full draft done |
 
 ### Phase 1: literature review
 Papers you already have in `dataset\`:
@@ -193,10 +196,10 @@ Key results (average of 3 runs):
 
 | Load | Avg latency uniform | Avg latency bursty | Critical deadline misses (mixed) |
 |---|---|---|---|
-| 20 % | 0.46 ms | 2.6 ms | 0.15 % |
-| 50 % | 0.74 ms | 4.1 ms | 16 % |
+| 20 % | 0.46 ms | 2.6 ms | 0.2 % |
+| 50 % | 0.74 ms | 4.1 ms | 17 % |
 | 70 % | 1.38 ms | 6.3 ms | 44 % |
-| 90 % | 4.28 ms | 12.9 ms | 66 % |
+| 90 % | 4.28 ms | 12.9 ms | 69 % |
 
 * Delay rises sharply above ~50 % load.
 * Bursty traffic is ~5x worse than smooth traffic even at 20 % load.
@@ -218,7 +221,7 @@ python run_tinyml.py
 * A decision tree (depth 4, 31 nodes) is trained on random seeds 0-3 and
   tested on unseen seeds.
 * Exported to C: `results\plca_state_model.h`, at most 4 comparisons,
-  ~240 bytes of code, so it really fits on an ECU.
+  208 bytes with gcc -Os on x86-64 (not measured on a microcontroller).
 
 Results on unseen runs:
 
@@ -227,7 +230,7 @@ Results on unseen runs:
 | TinyML tree (31 nodes) | 62 % | 0.58 |
 | "Next = now" persistence | 61 % | 0.55 |
 | Much larger gradient boosting | 63 % | 0.60 |
-| Oracle that knows the true load | 67 % | - |
+| Oracle that knows the true load | 67 % | 0.61 |
 
 * 88 % of predictions are correct or one class off.
 * Short-term traffic is random, so no model gets much above ~67 %.
@@ -238,7 +241,8 @@ Results on unseen runs:
 Output: `tinyml_confusion_matrix.png`, `tinyml_timeline.png`,
 `tinyml_size_vs_accuracy.png`, `tinyml_per_scenario.png`,
 `tinyml_feature_importance.png`, `tinyml_metrics.csv`,
-`tinyml_model.joblib`, `plca_state_model.h`.
+`tinyml_model.joblib`, `plca_state_model.h`. The reference models come from
+`python run_reference_models.py` (`tinyml_reference_models.csv`).
 
 ### Phase 5: adaptive policy engine + safety governor (done)
 * **Policy engine:** low or medium state means normal PLCA. High state:
@@ -247,7 +251,8 @@ Output: `tinyml_confusion_matrix.png`, `tinyml_timeline.png`,
 * **Safety governor:** checks every plan before it reaches the bus and
   never trusts the prediction.
   * For each known safety-critical flow (period P, frame time c, deadline D)
-    it fixes `L = ceil(D/P)` critical frames per TO.
+    it fixes `L = ceil(D/P)` critical frames per TO. Real flows with jitter
+    declare `L` themselves: the largest count in any window of length D.
   * It gives non-critical traffic a time budget `B`, counted since each
     critical node's last TO. Every node sees the bus, so each node can
     enforce this locally.
@@ -270,22 +275,23 @@ Four policies on the same unseen traffic:
 * **tinyml**: governor plus adaptation from the TinyML prediction (the full
   framework)
 
-Results:
+Results (mean of 5 unseen seeds; worst values are over all seeds):
 
 | Result | Conventional | Adaptive (TinyML) |
 |---|---|---|
-| Critical deadline misses at 50 / 70 / 90 % load | 16 / 42 / 78 % | **0 / 0 / 0 %** |
-| Worst critical latency at 90 % load | 218 ms | **1.45 ms** |
-| Frame loss at 90 % (mixed) | 15 % | **0.2 %** |
-| p99 latency, heterogeneous, 90 % | 24.6 ms | **14.4 ms (-42 %)** |
-| p99 latency, dynamic, 90 % | 59 ms | **50 ms (-15 %)** |
+| Critical deadline misses at 50 / 70 / 90 % load | 19 / 39 / 78 % | **0 / 0 / 0 %** |
+| Worst critical latency at 90 % load | 238 ms | **1.48 ms** |
+| Frame loss at 90 % (mixed) | 11.5 % | **0.1 %** |
+| p99 latency, heterogeneous, 90 % | 22.4 ms | **13.2 ms (-41 %)** |
+| p99 latency, dynamic, 90 % | 54.5 ms | **44.6 ms (-18 %)** |
 | Throughput | - | unchanged |
 
 Honest findings to report:
 * The large, guaranteed gain comes from the **safety governor**. Burst
-  adaptation gives moderate gains (about 3-23 % lower average latency).
-* Non-critical traffic pays the price in the mixed scenario: its average
-  latency rises from 18 ms to 33 ms at 90 % load.
+  adaptation gives moderate gains on synthetic traffic only.
+* Non-critical traffic pays: its average latency rises from 15.3 ms to
+  27.4 ms at 90 % load. Part of this is survivorship: conventional PLCA
+  loses 11.5 % of frames, which leave its average.
 * TinyML-driven adaptation is about as good as reactive adaptation. With
   ~62 % prediction accuracy, prediction adds little over measuring.
 * With unequal ECU loads, bursts reduce latency but increase jitter for the
@@ -295,7 +301,7 @@ Output: `adaptive_overview.png`, `adaptive_mixed_criticality.png`,
 `adaptive_latency_vs_load.png`, `adaptive_results.csv`,
 `adaptive_summary.csv`.
 
-### Phase 7: real traffic from the ROAD dataset (needs a run on your PC)
+### Phase 7: real traffic from the ROAD dataset (done)
 Data location on your PC:
 ```
 dataset\road\road\ambient\*.log      normal driving (USE THESE)
@@ -303,33 +309,64 @@ dataset\road\road\attacks\*.log      attacks (do NOT use for this project)
 dataset\road\road\signal_extractions decoded signals (not needed)
 dataset\road\__MACOSX                Mac leftovers (ignore)
 ```
-Run:
+Run (about 10 minutes for all logs):
 ```
-python run_road.py
-python run_road.py --log "dataset\road\road\ambient\ambient_dyno_drive_winter.log"
+python run_road.py --seeds 5
+python run_road_tinyml.py
+python run_tradeoff.py
 ```
 What it does:
-1. Reads the real CAN log, with every message at its real timestamp.
+1. Reads each real CAN log (first 300 s) with real timestamps.
 2. Each CAN message becomes a 64-byte Ethernet frame on 10BASE-T1S.
-3. CAN IDs are spread over 8 nodes by load (ROAD's DBC is anonymized, so
-   the sending ECU is unknown; state this assumption in the paper).
-4. The 2 fastest IDs are treated as safety-critical (2 ms deadline).
+3. Critical flows are spread over nodes first; other CAN IDs are balanced by
+   load (ROAD's DBC is anonymized, so the sending ECU is unknown; state this
+   assumption in the paper).
+4. Critical IDs are the fastest periodic IDs with the lowest CAN ID, the
+   highest bus priority: 0x00E and 0x033 in all 12 logs. Deadline 2 ms.
 5. The log is replayed k times with random offsets: a zone that collects k
    CAN buses.
 6. Experiment A: CAN only (1-8 CAN buses). Experiment B: CAN plus 30 %
-   bulk Ethernet with large frames, such as diagnostics or software
-   updates (1-4 CAN buses).
+   bulk Ethernet with large frames (1-5 CAN buses).
 
-Expected (from a test file in the same format; to be confirmed on real
-data): CAN-only traffic is easy for PLCA because the frames are tiny. The
-problems appear when large Ethernet frames share the zone, which is where
-the governor is needed.
+Results (12 logs x 5 seeds):
 
-Output: `road_comparison.png`, `road_summary.csv`, `road_results.csv`,
-`road_id_stats.csv`.
+* Governor: **0 misses in 1,620 runs**, worst latency 1.80 ms, bound 1.9 ms.
+* Conventional PLCA: misses in 271 of 600 runs, all in experiment B, already
+  at 42 % load. Worst 5.06 ms; mean misses 0.5-0.9 %, at most 2.5 % per run.
+* CAN only is easy for PLCA: no misses even at 113 % load.
+* At 98 % load in experiment B the governor refuses the configuration.
+* Cost: p99 of all frames doubles at 84 % load (49 -> 99 ms) and loss rises
+  from 0.4 % to 2.6 %.
+* Burst adaptation does NOT help here: it made p99 worse than the governor
+  alone. From 4 segments every node is critical, so nothing is left to adapt.
+* TinyML on unseen logs: ROAD-trained 81.6 %, persistence 78.2 %,
+  synthetic-trained 77.8 %. In closed loop the ROAD-trained model changes
+  p99 by less than 2 %.
+
+Trade-off studies (`run_tradeoff.py`):
+
+* Relaxing the deadline from 1.8 to 10 ms cuts non-critical latency by only
+  6 %, so the budget is not the main cost.
+* Adapting the budget to the predicted state changes latency by under 1 %.
+  This idea from section 7 did not work and was not adopted.
+* The bound held for 4-16 nodes and TO timers of 20-64 BT.
 
 If it says "Could not read any CAN frames", it prints the first lines of
 the log. Give those to Claude.
+
+### What was corrected during Phase 7
+The first replay on real data showed two real faults. Results before this
+point are out of date.
+
+* **The bound was broken.** Using the 1st-percentile gap as a period, and
+  0xFFF as a critical ID, gave 3.47 ms against a 1.9 ms bound. L is now the
+  worst count in any deadline-long window.
+* **"0 % misses" could be false.** Only delivered frames were counted: one
+  overloaded run reported 0 % while 10 % of critical frames were dropped.
+  Critical frames now have their own queue, and drops and overdue frames
+  count as misses. Conventional miss rates rose slightly as a result.
+
+Phases 3-6 were re-run after these fixes. Adaptive results use 5 seeds.
 
 ---
 
@@ -337,32 +374,26 @@ the log. Give those to Claude.
 
 | Dataset | Status | Use |
 |---|---|---|
-| ROAD | downloaded, unzipped | main real-traffic scenario (ambient logs only) |
+| ROAD | used, all 12 ambient logs | main real-traffic scenario (ambient logs only) |
 | AutoHack (VehicleSec 2026) | paper only | body bus is close to a zonal segment; data link is in the paper |
 | can-train-and-test | paper only | 4 cars, to test TinyML generalisation across vehicles |
 | CarDS | site not reachable | optional; has Automotive Ethernet (probably 100/1000BASE-T1, not T1S) |
 | comma2k19 | skipped | ~100 GB, mostly video |
 
-No public 10BASE-T1S traffic dataset exists yet. Using real CAN traces
-migrated to 10BASE-T1S is the standard approach; say so in the paper.
+We know of no public 10BASE-T1S traffic dataset. Replaying real CAN traces
+on 10BASE-T1S is a practical substitute; say so in the paper.
 
 ---
 
 ## 7. Next steps
 
-1. Run `python run_road.py` on the real ROAD logs (all ambient logs if
-   possible) and compare with the simulation results.
-2. Check that experiment B on real data still shows conventional PLCA
-   missing deadlines while the governor gives 0 %.
-3. Optional improvements:
-   * train TinyML on ROAD-derived windows as well as synthetic ones
-   * reduce the cost to non-critical traffic, for example by adapting the
-     non-critical budget to the predicted state
+1. Read the paper and check its assumptions, above all the 2 ms deadline.
+2. Read the full text of references marked (abstract) and confirm those
+   marked (from memory). Re-check the research gap in IEEE Xplore.
+3. Optional:
    * add AutoHack / can-train-and-test traces for more vehicles
-4. Write the paper: background (section 2 of this guide), model (Phase 2),
-   baseline (Phase 3), framework (Phases 4-5), evaluation (Phases 6-7),
-   limitations (honest findings above), future work (hardware with
-   10BASE-T1S evaluation boards).
+   * find out why non-critical traffic pays, with an isolating experiment
+   * test on hardware with 10BASE-T1S evaluation boards
 
 ---
 

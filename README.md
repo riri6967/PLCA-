@@ -16,6 +16,8 @@ adaptive policy + deterministic safety governor) and compare the two.
 | 4 | TinyML network-state prediction (monitor, features, decision tree, C export) | done |
 | 5 | Adaptive policy engine + deterministic safety governor | done |
 | 6 | Conventional vs adaptive comparison | done (simulation) |
+| 7 | Real traffic: 12 ROAD logs, TinyML on real data, trade-off studies | done |
+| 8 | [Paper draft](https://claude.ai/artifact/Gp8QCyRSX1jDppPn7tdxH8) | first full draft |
 
 ## Run it on Windows
 
@@ -47,25 +49,30 @@ python run_adaptive.py
 Real traffic from the ROAD dataset (unzip it to `dataset\road\`):
 
 ```
-python run_road.py
+python run_road.py --seeds 5
+python run_road_tinyml.py
+python run_tradeoff.py
+python run_reference_models.py
 ```
 
 ## Real traffic: ROAD CAN traces (`run_road.py`, `plca_sim/road.py`)
 
-Replays the attack-free ROAD log `ambient_highway_street_driving_long.log`
-(choose another with `--log`) on the 10BASE-T1S zone. Each CAN frame keeps
-its real timestamp and becomes a 64-byte Ethernet frame; CAN IDs are spread
-over the 8 nodes by load (ROAD's DBC is anonymized, so the sending ECU is
-unknown); the two fastest IDs are treated as safety-critical (2 ms
-deadline); replaying the trace k times with random offsets models a zone
+Replays all 12 attack-free ROAD logs (choose others with `--log`) on the
+10BASE-T1S zone. Each CAN frame keeps its real timestamp and becomes a
+64-byte Ethernet frame. ROAD's DBC is anonymized, so the sending ECU is
+unknown: critical flows are spread over nodes first and other IDs balanced
+by load. Critical IDs are the fastest periodic IDs with the lowest CAN ID
+(2 ms deadline). Replaying a trace k times with random offsets models a zone
 that aggregates k CAN segments.
 
 * Experiment A: CAN traffic only, 1-8 CAN segments.
 * Experiment B: CAN traffic + 30 % bulk Ethernet with large frames
-  (diagnostics, software updates), 1-4 CAN segments.
+  (diagnostics, software updates), 1-5 CAN segments.
 
-The governor uses the largest frame that actually occurs (64 bytes in A), so
-its guarantee stays feasible for many CAN segments.
+Governor: 0 misses in 1,620 runs, worst 1.80 ms against a 1.9 ms bound, and
+it refuses the 98 % load it cannot guarantee. Conventional PLCA: misses in
+271 of 600 runs, all in experiment B. The cost: p99 of all frames doubles at
+84 % load. Burst adaptation does not help on this traffic.
 
 ## Phase 4: TinyML network-state prediction
 
@@ -79,7 +86,7 @@ its guarantee stays feasible for many CAN segments.
   unseen seeds 100-101 in all scenarios, including `dynamic` (load and
   burstiness change every 20-100 ms).
 * The tree is exported to `results/plca_state_model.h`, a C function with at
-  most 4 comparisons and ~240 bytes of compiled code.
+  most 4 comparisons and 208 bytes with gcc -Os on x86-64.
 
 Results on unseen runs: 62 % accuracy / 0.58 macro-F1 vs. 61 % / 0.55 for a
 "next = now" persistence baseline. 88 % of predictions are correct or one
@@ -100,8 +107,8 @@ governor must enforce the deterministic guarantees whatever the model says.
   (`"reactive"`), or adaptation is off (`"off"`).
 * **Safety governor** (`SafetyGovernor`): checks every plan before it reaches
   the bus and never trusts the prediction. For known critical flows
-  (period P_i, frame time c_i, deadline D) it fixes L_i = ceil(D/P_i)
-  critical frames per TO and a budget B for non-critical bus time counted
+  (period P_i, frame time c_i, deadline D) it fixes L_i = ceil(D/P_i), or
+  the declared worst count for flows with jitter, critical frames per TO and a budget B for non-critical bus time counted
   since each critical node's last TO. The gap between two TOs of a critical
   node is then at most C = F + sum L_i c_i + B, so every critical frame is
   delivered within C + L_i c_i <= D (proof in the class docstring; checked
@@ -109,14 +116,14 @@ governor must enforce the deterministic guarantees whatever the model says.
   conventional PLCA's own worst case. All nodes see the bus, so each node
   can enforce the budget locally.
 
-## Phase 6 results (`run_adaptive.py`, unseen seeds 200-202)
+## Phase 6 results (`run_adaptive.py --seeds 5`, unseen seeds 200-204)
 
 Mixed criticality: the governor guarantees a 1.9 ms bound for the 2 ms
-deadline. Measured worst critical latency is about 1.45 ms at every load,
-and **0 % deadline misses** vs. 0.5 / 1.8 / 16 / 42 / 78 % for conventional
-PLCA at 20 / 30 / 50 / 70 / 90 % load. Frame loss at 90 % drops from 15 % to
-0.2 %. The price: non-critical frames wait longer (average 17.9 -> 32.9 ms
-at 90 % load).
+deadline. Measured worst critical latency is at most 1.50 ms at every load,
+and **0 % deadline misses** vs. 0.4 / 2.4 / 19 / 39 / 78 % for conventional
+PLCA at 20 / 30 / 50 / 70 / 90 % load. Frame loss at 90 % drops from 11.5 % to
+0.1 %. The price: non-critical frames wait longer (average 15.3 -> 27.4 ms
+at 90 % load). Misses include dropped and overdue critical frames.
 
 Change of adaptive (TinyML) vs conventional PLCA at 90 % load:
 
@@ -130,7 +137,8 @@ Change of adaptive (TinyML) vs conventional PLCA at 90 % load:
 Honest observations:
 
 * The large, guaranteed gain is for safety-critical traffic, and it comes
-  from the governor. Burst adaptation gives moderate gains for the rest.
+  from the governor. Burst adaptation gives moderate gains on synthetic
+  traffic, and none on real ROAD traffic.
 * TinyML-driven adaptation performs almost the same as reactive adaptation
   (measured state): with ~62 % prediction accuracy (Phase 4) the prediction
   adds little over measuring the current state.
@@ -155,6 +163,9 @@ run_baseline.py  Runs all scenarios with conventional PLCA and plots results
 run_tinyml.py    Builds the dataset, trains and evaluates the TinyML model
 run_adaptive.py  Compares conventional, governor, reactive and TinyML policies
 run_road.py      Same comparison on real ROAD CAN traffic
+run_road_tinyml.py  TinyML trained and tested on real ROAD windows
+run_tradeoff.py  Cost of the guarantee, budget adaptation, sensitivity
+run_reference_models.py  Gradient boosting and oracle reference models
 tests/           Sanity checks
 ```
 

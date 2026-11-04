@@ -55,6 +55,23 @@ def collect_samples(
 ) -> pd.DataFrame:
     """Simulate conventional PLCA and return labelled feature windows."""
     frames = make_traffic(scenario, load, cfg, duration_s, seed)
+    df = monitor_windows(frames, cfg, duration_s, window_s, horizon)
+    if df.empty:
+        return df
+    df["scenario"] = scenario
+    df["load"] = load
+    df["seed"] = seed
+    return df
+
+
+def monitor_windows(
+    frames: list,
+    cfg: PLCAConfig,
+    duration_s: float,
+    window_s: float = 5e-3,
+    horizon: int = 4,
+) -> pd.DataFrame:
+    """Run `frames` on conventional PLCA and return labelled feature windows."""
     pol = MonitoringPolicy(cfg, window_s=window_s)
     simulate(frames, cfg, cfg.s_to_bt(duration_s), pol)
     df = pd.DataFrame(pol.monitor.samples)
@@ -71,9 +88,6 @@ def collect_samples(
     df["state_now"] = state_of(past_util, past_queue)
     df = df[keep].copy()
     df["state_next"] = state_of(fut_util[keep], fut_queue[keep])
-    df["scenario"] = scenario
-    df["load"] = load
-    df["seed"] = seed
     return df
 
 

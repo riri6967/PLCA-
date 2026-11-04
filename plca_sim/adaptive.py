@@ -49,6 +49,7 @@ class SafetyGovernor:
     (times `margin`). The governor fixes
 
         L_i = ceil(D / P_i)                       critical frames per TO
+              (or the flow's stated `max_in_deadline`, for flows with jitter)
         B   = D - F - sum_i L_i c_i - max_i L_i c_i   non-critical budget
 
     The budget B is counted from the start of each critical node's TO (the
@@ -56,9 +57,12 @@ class SafetyGovernor:
     of a critical node there is one BEACON, one TO of every node, at most
     L_j critical frames of every critical node j and at most B of
     non-critical traffic, so the gap is at most  C = F + sum_i L_i c_i + B.
-    At most ceil(C / P_i) <= L_i of its frames arrive in such a gap, so its
-    queue is cleared at every visit and each critical frame is delivered
-    within  C + L_i c_i <= D.
+    At most L_i of its frames arrive in such a gap (C <= D), so its queue is
+    cleared at every visit and each critical frame is delivered within
+    C + L_i c_i <= D.
+
+    The bound holds only while flows respect L_i. A flow that sends more than
+    it declared is outside the guarantee.
 
     Without critical flows every node is an anchor and B = N * (max frame),
     so the gap between two TOs of any node never exceeds conventional
@@ -95,7 +99,7 @@ class SafetyGovernor:
         crit_bt: dict[int, float] = {}
         for f in self.flows:
             period = cfg.s_to_bt(f.period_s)
-            n = math.ceil(deadline / period)
+            n = f.max_in_deadline if f.max_in_deadline is not None else math.ceil(deadline / period)
             self.crit_limit[f.node] = self.crit_limit.get(f.node, 0) + n
             crit_bt[f.node] = crit_bt.get(f.node, 0.0) + n * cfg.wire_bits(f.size)
         total_crit = sum(crit_bt.values())
@@ -157,6 +161,7 @@ class AdaptivePolicy(Policy):
         mode: str = "tinyml",
         window_s: float = 5e-3,
         max_burst: int = 8,
+        budget_scale: Sequence[float] | None = None,
     ) -> None:
         super().__init__(cfg)
         if mode not in ("tinyml", "reactive", "off"):
@@ -167,6 +172,10 @@ class AdaptivePolicy(Policy):
         self.model = getattr(model, "tree", model)  # TrainedModel or sklearn tree
         self.mode = mode
         self.max_burst = max_burst
+        # Optional share of the governor's budget to use per state (low,
+        # medium, high, congested). It can only shrink the budget, so it cannot
+        # weaken the guarantee, and never goes below one maximum-size frame.
+        self.budget_scale = budget_scale
         self.monitor = NetworkMonitor(cfg, window_s)
         self.state = 0
         self.state_counts = [0, 0, 0, 0]
@@ -193,6 +202,9 @@ class AdaptivePolicy(Policy):
     def plan(self, obs: Observation) -> CyclePlan:
         self._update_state(obs)
         plan = CyclePlan(self.frames_per_to(obs))
+        if self.governor is not None and self.budget_scale is not None:
+            plan.nc_budget_bt = max(self.budget_scale[self.state] * self.governor.nc_budget_bt,
+                                    self.governor.max_frame_bt)
         if self.governor is not None:
             plan = self.governor.enforce(plan, obs)
         return plan

@@ -13,7 +13,12 @@ Migration to a zonal 10BASE-T1S segment (assumptions, stated in the paper):
     trace k times with independent random time offsets (each copy = another
     CAN segment on the same zone), which raises the load while keeping the
     real per-ID timing patterns.
-  * The fastest IDs are treated as safety-critical with a given deadline.
+  * Critical flows are chosen by real CAN semantics: among the fastest
+    strictly periodic IDs, the ones with the lowest CAN ID, i.e. the highest
+    bus priority. Aperiodic IDs such as 0xFFF (lowest CAN priority, gaps down
+    to ~1 us) are not eligible even if they are the most frequent.
+  * The guarantee does not assume a period: each critical flow declares the
+    largest number of frames seen in any deadline-long window of the trace.
   * Optional "bulk" traffic adds native Ethernet data with large frames
     (diagnostics, software updates, sensor streams) on the last nodes.
 """
@@ -84,6 +89,28 @@ def id_stats(trace: pd.DataFrame) -> pd.DataFrame:
     return pd.DataFrame(rows).sort_values("rate_hz", ascending=False).reset_index(drop=True)
 
 
+def select_critical_ids(stats: pd.DataFrame, n: int) -> list[int]:
+    """Highest-priority (lowest) CAN IDs among the fastest periodic IDs."""
+    if n <= 0:
+        return []
+    periodic = stats[stats.period_p1_s >= 0.5 * stats.period_median_s]
+    if periodic.empty:
+        raise ValueError("no periodic CAN ID in this trace: cannot pick critical flows")
+    fastest = periodic.period_median_s.min()
+    near = periodic.period_median_s <= 1.25 * fastest
+    first = periodic[near].sort_values("can_id")
+    rest = periodic[~near].sort_values(["period_median_s", "can_id"])
+    return [int(c) for c in pd.concat([first, rest]).can_id.head(n)]
+
+
+def max_in_window(times: np.ndarray, window_s: float) -> int:
+    """Largest number of events in any half-open window of length `window_s`."""
+    t = np.sort(np.asarray(times))
+    if len(t) == 0:
+        return 0
+    return int(np.max(np.searchsorted(t, t + window_s, side="left") - np.arange(len(t))))
+
+
 def frame_bytes(dlc: int) -> int:
     return max(ETH_MIN, ETH_OVERHEAD + dlc)
 
@@ -117,15 +144,32 @@ def make_road_traffic(
     span = float(trace.t.max())
     if span < duration_s:
         raise ValueError(f"trace is only {span:.1f} s long; use a shorter duration")
-    crit_ids = set(stats.can_id.head(n_critical)) if n_critical else set()
+    crit_ids = set(select_critical_ids(stats, n_critical))
 
     # Assign (copy, CAN ID) pairs to nodes, heaviest first, to the least loaded node.
     load = np.zeros(cfg.node_count)
     id_to_node: dict[tuple[int, int], int] = {}
+
+    def bits_of(r) -> float:
+        return r.rate_hz * cfg.wire_bits(frame_bytes(int(r.dlc)))
+
+    # Critical flows first, spread evenly: one node per flow where possible,
+    # which leaves the governor the largest non-critical budget.
+    plain = [n for n in range(cfg.node_count)
+             if not (bulk_load > 0 and n >= cfg.node_count - bulk_nodes)]
+    bulky = [n for n in range(cfg.node_count) if n not in plain]
+    order = plain + bulky
+    k = 0
+    for c in range(copies):
+        for _, r in stats[stats.can_id.isin(crit_ids)].iterrows():
+            node = order[k % len(order)]
+            k += 1
+            id_to_node[(c, int(r.can_id))] = node
+            load[node] += bits_of(r)
     items = []
     for c in range(copies):
-        for _, r in stats.iterrows():
-            items.append((r.rate_hz * cfg.wire_bits(frame_bytes(int(r.dlc))), c, int(r.can_id)))
+        for _, r in stats[~stats.can_id.isin(crit_ids)].iterrows():
+            items.append((bits_of(r), c, int(r.can_id)))
     items.sort(reverse=True)
     for bits, c, cid in items:
         node = int(np.argmin(load))
@@ -154,14 +198,14 @@ def make_road_traffic(
             frames += bursty_traffic(rng, cfg, node, bulk_load / bulk_nodes, horizon,
                                      8.0, sizes, probs)
 
-    # Critical flows for the governor. Real traces jitter, so use a
-    # conservative period: the 1st-percentile gap, but at least half the median.
+    # Critical flows for the governor. Real traces jitter, so the guarantee
+    # uses the worst count measured over the whole trace, not a period.
     flows = []
     for _, r in stats[stats.can_id.isin(crit_ids)].iterrows():
-        period = max(r.period_p1_s, 0.5 * r.period_median_s)
+        worst = max_in_window(t_all[ids_all == int(r.can_id)], critical_deadline_s)
         for c in range(copies):
-            flows.append(CriticalFlow(id_to_node[(c, int(r.can_id))], period,
-                                      frame_bytes(int(r.dlc)), critical_deadline_s))
+            flows.append(CriticalFlow(id_to_node[(c, int(r.can_id))], float(r.period_median_s),
+                                      frame_bytes(int(r.dlc)), critical_deadline_s, worst))
 
     offered = sum(cfg.wire_bits(f.size) for f in frames) / horizon
     return RoadTraffic(frames, tuple(flows), offered, id_to_node)
