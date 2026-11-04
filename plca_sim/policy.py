@@ -30,6 +30,24 @@ class Observation:
     dropped: int = 0
 
 
+@dataclass
+class CyclePlan:
+    """What the nodes may do in the coming PLCA cycle."""
+
+    # Maximum frames each node may send in its TO (values < 1 count as 1).
+    limits: list[int]
+    # Bus time (BT) that non-critical frames may use; None = unlimited
+    # (conventional PLCA). Without anchors it is counted per cycle. With
+    # anchors it is counted, for every anchor node, since the start of that
+    # node's last TO, which bounds the gap between two TOs of each anchor.
+    nc_budget_bt: float | None = None
+    anchors: tuple[int, ...] = ()
+    # Node for which `reserve_bt` of the budget is kept free until its TO,
+    # so nodes late in the TO order cannot be starved.
+    reserved_node: int | None = None
+    reserve_bt: float = 0.0
+
+
 class Policy:
     def __init__(self, cfg: PLCAConfig) -> None:
         self.cfg = cfg
@@ -37,6 +55,10 @@ class Policy:
     def frames_per_to(self, obs: Observation) -> list[int]:
         """Return, per node, the maximum number of frames for this cycle (>= 1)."""
         raise NotImplementedError
+
+    def plan(self, obs: Observation) -> CyclePlan:
+        """Full plan for the next cycle. Default: frame limits only."""
+        return CyclePlan(self.frames_per_to(obs))
 
 
 class ConventionalPolicy(Policy):

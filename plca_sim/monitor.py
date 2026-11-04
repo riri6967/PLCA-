@@ -14,7 +14,7 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 
 from .config import PLCAConfig
-from .policy import ConventionalPolicy, Observation, Policy
+from .policy import ConventionalPolicy, CyclePlan, Observation, Policy
 
 FEATURES = (
     "util",  # bus utilization in the last window
@@ -113,5 +113,8 @@ class MonitoringPolicy(Policy):
         self.monitor = NetworkMonitor(cfg, window_s)
 
     def frames_per_to(self, obs: Observation) -> list[int]:
+        return self.plan(obs).limits
+
+    def plan(self, obs: Observation) -> CyclePlan:
         self.monitor.observe(obs)
-        return self.inner.frames_per_to(obs)
+        return self.inner.plan(obs)

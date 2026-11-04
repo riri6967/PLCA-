@@ -8,6 +8,10 @@ Model (simplified from IEEE 802.3cg clause 148):
     may send several frames back to back in one TO.
   * A node with nothing to send lets its TO expire after `to_timer_bt`.
   * Within a node, critical frames are served before non-critical ones.
+  * A policy may give each cycle a budget for non-critical bus time; a node
+    whose next non-critical frame would exceed it defers that frame (it
+    stays queued) and ends its TO. All nodes see the bus, so each node can
+    track the budget locally.
 """
 
 from __future__ import annotations
@@ -46,6 +50,10 @@ class SimResult:
     queue_sum: list[int] = field(default_factory=list)
     queue_samples: list[int] = field(default_factory=list)
     cycle_lengths: list[float] = field(default_factory=list)
+    # Non-critical frames held back for a later cycle by a cycle budget.
+    deferred: int = 0
+    # Longest time between the starts of two consecutive TOs of one node.
+    max_to_gap_bt: float = 0.0
 
     @property
     def backlog(self) -> int:
@@ -93,6 +101,10 @@ def simulate(
                 n_critical[n] += 1
         ptr[n] = i
 
+    # Non-critical bus time since the start of each anchor's last TO.
+    since_anchor: dict[int, float] = {}
+    last_to_start: list[float | None] = [None] * n_nodes
+
     t = 0.0
     cycle = 0
     last_cycle = float(cfg.empty_cycle_bt)
@@ -112,7 +124,14 @@ def simulate(
             arrived=sum(ptr),
             dropped=len(res.dropped),
         )
-        limits = policy.frames_per_to(obs)
+        plan = policy.plan(obs)
+        limits = plan.limits
+        budget = plan.nc_budget_bt
+        nc_used = 0.0
+        for a in plan.anchors:
+            since_anchor.setdefault(a, 0.0)
+        for a in [a for a in since_anchor if a not in plan.anchors]:
+            del since_anchor[a]
 
         t += cfg.beacon_bt
         for n in range(n_nodes):
@@ -121,16 +140,28 @@ def simulate(
             res.queue_sum[n] += len(q)
             res.queue_samples[n] += 1
             res.tos_total += 1
-            if not q:
-                t += cfg.to_timer_bt
-                continue
-            res.tos_used += 1
+            if last_to_start[n] is not None:
+                res.max_to_gap_bt = max(res.max_to_gap_bt, t - last_to_start[n])
+            last_to_start[n] = t
+            if n in since_anchor:
+                since_anchor[n] = 0.0
             sent = 0
             while q and sent < max(1, limits[n]):
-                _, _, _, f = heapq.heappop(q)
+                f = q[0][3]
+                tx = cfg.wire_bits(f.size)
+                if budget is not None and not f.critical:
+                    # Keep room for the reserved node until its TO has passed.
+                    hold = plan.reserve_bt if plan.reserved_node is not None and n < plan.reserved_node else 0.0
+                    used = max(since_anchor.values()) if since_anchor else nc_used
+                    if used + tx + hold > budget:
+                        res.deferred += 1
+                        break
+                    nc_used += tx
+                    for a in since_anchor:
+                        since_anchor[a] += tx
+                heapq.heappop(q)
                 if f.critical:
                     n_critical[n] -= 1
-                tx = cfg.wire_bits(f.size)
                 res.records.append(
                     FrameRecord(n, f.arrival, t, t + tx, f.size, f.critical, f.deadline)
                 )
@@ -138,6 +169,10 @@ def simulate(
                 res.busy_bt += tx
                 sent += 1
                 enqueue(n, t)
+            if sent:
+                res.tos_used += 1
+            else:
+                t += cfg.to_timer_bt
 
         last_cycle = t - cycle_start
         res.cycle_lengths.append(last_cycle)

@@ -97,3 +97,13 @@ def periodic_traffic(
     deadline = cfg.s_to_bt(deadline_s)
     times = np.arange(phase, duration_bt, period)
     return [Frame(node, float(t), size, critical, deadline) for t in times]
+
+
+@dataclass(frozen=True)
+class CriticalFlow:
+    """A safety-critical periodic flow known at design time."""
+
+    node: int
+    period_s: float
+    size: int  # bytes
+    deadline_s: float

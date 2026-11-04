@@ -15,7 +15,7 @@ from __future__ import annotations
 import numpy as np
 
 from .config import PLCAConfig
-from .traffic import Frame, bursty_traffic, periodic_traffic, poisson_traffic
+from .traffic import CriticalFlow, Frame, bursty_traffic, periodic_traffic, poisson_traffic
 
 SCENARIOS = ("uniform", "heterogeneous", "bursty", "mixed")
 
@@ -24,6 +24,15 @@ CRITICAL_NODES = (1, 2)
 CRITICAL_PERIOD_S = 1e-3  # 1 ms control message
 CRITICAL_SIZE = 64  # bytes
 CRITICAL_DEADLINE_S = 2e-3  # must arrive within 2 ms
+
+
+def critical_flows(scenario: str) -> tuple[CriticalFlow, ...]:
+    """Safety-critical flows of a scenario (known at design time)."""
+    if scenario != "mixed":
+        return ()
+    return tuple(
+        CriticalFlow(n, CRITICAL_PERIOD_S, CRITICAL_SIZE, CRITICAL_DEADLINE_S) for n in CRITICAL_NODES
+    )
 
 
 def make_traffic(

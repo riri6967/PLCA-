@@ -14,8 +14,8 @@ adaptive policy + deterministic safety governor) and compare the two.
 | 2 | Monitoring of latency, jitter, throughput, bus/TO utilization, queues, loss | done |
 | 3 | Conventional PLCA baseline + plots | done |
 | 4 | TinyML network-state prediction (monitor, features, decision tree, C export) | done |
-| 5 | Adaptive policy engine + safety governor | to do |
-| 6 | Conventional vs adaptive comparison | to do |
+| 5 | Adaptive policy engine + deterministic safety governor | done |
+| 6 | Conventional vs adaptive comparison | done (simulation) |
 
 ## Run it on Windows
 
@@ -36,6 +36,12 @@ Phase 4 (TinyML), about 1 minute:
 
 ```
 python run_tinyml.py
+```
+
+Phases 5-6 (adaptive PLCA vs conventional), about 2-4 minutes:
+
+```
+python run_adaptive.py
 ```
 
 ## Phase 4: TinyML network-state prediction
@@ -60,20 +66,70 @@ remaining errors come mostly from the randomness of the traffic itself.
 Predictions alone are therefore not trusted blindly: the Phase 5 safety
 governor must enforce the deterministic guarantees whatever the model says.
 
+## Phase 5: adaptive policy engine + safety governor
+
+`plca_sim/adaptive.py`
+
+* **Policy engine** (`AdaptivePolicy`): low/medium state -> conventional
+  PLCA; high -> nodes with >=3 queued frames may send 2 per TO; congested ->
+  nodes with >=2 queued frames may send up to 8 per TO. The state comes from
+  the TinyML model (`mode="tinyml"`), from the measured current state
+  (`"reactive"`), or adaptation is off (`"off"`).
+* **Safety governor** (`SafetyGovernor`): checks every plan before it reaches
+  the bus and never trusts the prediction. For known critical flows
+  (period P_i, frame time c_i, deadline D) it fixes L_i = ceil(D/P_i)
+  critical frames per TO and a budget B for non-critical bus time counted
+  since each critical node's last TO. The gap between two TOs of a critical
+  node is then at most C = F + sum L_i c_i + B, so every critical frame is
+  delivered within C + L_i c_i <= D (proof in the class docstring; checked
+  by `tests/test_adaptive.py`). Without critical flows it caps the gap at
+  conventional PLCA's own worst case. All nodes see the bus, so each node
+  can enforce the budget locally.
+
+## Phase 6 results (`run_adaptive.py`, unseen seeds 200-202)
+
+Mixed criticality: the governor guarantees a 1.9 ms bound for the 2 ms
+deadline. Measured worst critical latency is about 1.45 ms at every load,
+and **0 % deadline misses** vs. 0.5 / 1.8 / 16 / 42 / 78 % for conventional
+PLCA at 20 / 30 / 50 / 70 / 90 % load. Frame loss at 90 % drops from 15 % to
+0.2 %. The price: non-critical frames wait longer (average 17.9 -> 32.9 ms
+at 90 % load).
+
+Change of adaptive (TinyML) vs conventional PLCA at 90 % load:
+
+| Scenario | Mean latency | p99 latency | Jitter | Throughput |
+|---|---|---|---|---|
+| uniform | -5 % | -11 % | -9 % | 0 % |
+| heterogeneous | -23 % | -42 % | +48 % | 0 % |
+| bursty | -6 % | +5 % | -12 % | 0 % |
+| dynamic | -3 % | -15 % | -8 % | 0 % |
+
+Honest observations:
+
+* The large, guaranteed gain is for safety-critical traffic, and it comes
+  from the governor. Burst adaptation gives moderate gains for the rest.
+* TinyML-driven adaptation performs almost the same as reactive adaptation
+  (measured state): with ~62 % prediction accuracy (Phase 4) the prediction
+  adds little over measuring the current state.
+* With unequal ECU loads, bursts cut latency but raise jitter for the
+  lightly loaded ECUs.
+
 ## Project layout
 
 ```
 plca_sim/
   config.py      PLCA parameters (nodes, TO timer, beacon, burst mode, queue size)
   traffic.py     Poisson, bursty and periodic (safety-critical) traffic generators
-  scenarios.py   Evaluation scenarios 1-4
+  scenarios.py   Evaluation scenarios 1-4 plus "dynamic"
   simulator.py   Cycle-level PLCA simulator (BEACON -> TO 0..N-1 -> next BEACON)
   policy.py      Policy interface; ConventionalPolicy = standard PLCA
   metrics.py     KPIs from a simulation run
   monitor.py     PLCA monitoring and feature extraction
   tinyml.py      Labelling, decision-tree training, export to C
+  adaptive.py    Adaptive policy engine and safety governor
 run_baseline.py  Runs all scenarios with conventional PLCA and plots results
 run_tinyml.py    Builds the dataset, trains and evaluates the TinyML model
+run_adaptive.py  Compares conventional, governor, reactive and TinyML policies
 tests/           Sanity checks
 ```
 
