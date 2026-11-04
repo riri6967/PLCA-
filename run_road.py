@@ -70,7 +70,7 @@ def replay_log(job: tuple[Path, argparse.Namespace]) -> tuple[list[dict], list[d
     model = joblib.load(args.model) if Path(args.model).exists() else None
     policies = POLICIES if model is not None else POLICIES[:3]
     span = trace.t.max()
-    crit = select_critical_ids(stats, args.critical_ids)
+    crit = select_critical_ids(stats, args.critical_ids, args.critical_skip)
     print(f"{name}: {len(trace) / span:.0f} frames/s, {len(stats)} IDs, critical "
           f"{[hex(c) for c in crit]}", flush=True)
 
@@ -80,7 +80,8 @@ def replay_log(job: tuple[Path, argparse.Namespace]) -> tuple[list[dict], list[d
         for copies in [int(c) for c in copies_list.split(",")]:
             for seed in range(args.seeds):
                 rt = make_road_traffic(trace, cfg, copies, args.duration, seed, args.critical_ids,
-                                       args.deadline_ms / 1000, bulk_load=bulk)
+                                       args.deadline_ms / 1000, bulk_load=bulk,
+                                       critical_skip=args.critical_skip)
                 try:
                     gov = SafetyGovernor(cfg, rt.flows, max_frame_bytes=rt.max_frame_bytes)
                     bound_us = max(cfg.bt_to_us(v) for v in gov.latency_bound_bt.values())
@@ -118,6 +119,8 @@ def main() -> None:
     ap.add_argument("--duration", type=float, default=2.0)
     ap.add_argument("--seeds", type=int, default=3)
     ap.add_argument("--critical-ids", type=int, default=2, help="CAN IDs treated as critical")
+    ap.add_argument("--critical-skip", type=int, default=0,
+                    help="skip this many IDs when picking critical flows (robustness check)")
     ap.add_argument("--deadline-ms", type=float, default=2.0)
     ap.add_argument("--nodes", type=int, default=8)
     ap.add_argument("--model", default="results/tinyml_model.joblib")

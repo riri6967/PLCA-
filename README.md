@@ -61,8 +61,9 @@ Replays all 12 attack-free ROAD logs (choose others with `--log`) on the
 10BASE-T1S zone. Each CAN frame keeps its real timestamp and becomes a
 64-byte Ethernet frame. ROAD's DBC is anonymized, so the sending ECU is
 unknown: critical flows are spread over nodes first and other IDs balanced
-by load. Critical IDs are the fastest periodic IDs with the lowest CAN ID
-(2 ms deadline). Replaying a trace k times with random offsets models a zone
+by load. Critical IDs (the fastest periodic IDs) and the 2 ms deadline are
+assumptions: ROAD does not reveal them, and its ID obfuscation does not
+preserve bus priority. Replaying a trace k times with random offsets models a zone
 that aggregates k CAN segments.
 
 * Experiment A: CAN traffic only, 1-8 CAN segments.
@@ -71,8 +72,9 @@ that aggregates k CAN segments.
 
 Governor: 0 misses in 1,620 runs, worst 1.80 ms against a 1.9 ms bound, and
 it refuses the 98 % load it cannot guarantee. Conventional PLCA: misses in
-271 of 600 runs, all in experiment B. The cost: p99 of all frames doubles at
-84 % load. Burst adaptation does not help on this traffic.
+271 of 600 runs at 2 ms, all in experiment B, but none at 5 or 10 ms. The
+cost at 2 ms: p99 of all frames doubles at 84 % load. Burst adaptation does
+not help on this traffic.
 
 ## Phase 4: TinyML network-state prediction
 

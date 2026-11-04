@@ -314,6 +314,8 @@ Run (about 10 minutes for all logs):
 python run_road.py --seeds 5
 python run_road_tinyml.py
 python run_tradeoff.py
+python run_road.py --deadline-ms 5 --model none --out results\road_robust\d5
+python run_road.py --critical-skip 2 --model none --out results\road_robust\skip2
 ```
 What it does:
 1. Reads each real CAN log (first 300 s) with real timestamps.
@@ -321,8 +323,9 @@ What it does:
 3. Critical flows are spread over nodes first; other CAN IDs are balanced by
    load (ROAD's DBC is anonymized, so the sending ECU is unknown; state this
    assumption in the paper).
-4. Critical IDs are the fastest periodic IDs with the lowest CAN ID, the
-   highest bus priority: 0x00E and 0x033 in all 12 logs. Deadline 2 ms.
+4. Critical IDs are an assumption: the fastest periodic IDs, with the lowest
+   ID as a repeatable tie-break (0x00E and 0x033 in all 12 logs). ROAD's ID
+   obfuscation does not preserve bus priority. Deadline 2 ms, also assumed.
 5. The log is replayed k times with random offsets: a zone that collects k
    CAN buses.
 6. Experiment A: CAN only (1-8 CAN buses). Experiment B: CAN plus 30 %
@@ -331,8 +334,13 @@ What it does:
 Results (12 logs x 5 seeds):
 
 * Governor: **0 misses in 1,620 runs**, worst latency 1.80 ms, bound 1.9 ms.
-* Conventional PLCA: misses in 271 of 600 runs, all in experiment B, already
-  at 42 % load. Worst 5.06 ms; mean misses 0.5-0.9 %, at most 2.5 % per run.
+* Conventional PLCA at the assumed 2 ms deadline: misses in 271 of 600 runs,
+  all in experiment B, already at 42 % load. Worst 5.06 ms; mean misses
+  0.5-0.9 %, at most 2.5 % per run.
+* **This depends on the deadline.** At 5 ms or 10 ms conventional PLCA missed
+  nothing (`results\road_robust\`). On this traffic the governor is needed
+  only for deadlines under about 5 ms.
+* With other critical IDs the governor still had 0 misses in 1,008 runs.
 * CAN only is easy for PLCA: no misses even at 113 % load.
 * At 98 % load in experiment B the governor refuses the configuration.
 * Cost: p99 of all frames doubles at 84 % load (49 -> 99 ms) and loss rises
@@ -350,6 +358,9 @@ Trade-off studies (`run_tradeoff.py`):
 * Adapting the budget to the predicted state changes latency by under 1 %.
   This idea from section 7 did not work and was not adopted.
 * The bound held for 4-16 nodes and TO timers of 20-64 BT.
+* With 1518-byte frames on the segment, the shortest deadline the governor
+  can guarantee is 1.54 ms. A few hundred microseconds needs small frames
+  only (`tradeoff_min_deadline.csv`).
 
 If it says "Could not read any CAN frames", it prints the first lines of
 the log. Give those to Claude.
@@ -359,8 +370,9 @@ The first replay on real data showed two real faults. Results before this
 point are out of date.
 
 * **The bound was broken.** Using the 1st-percentile gap as a period, and
-  0xFFF as a critical ID, gave 3.47 ms against a 1.9 ms bound. L is now the
-  worst count in any deadline-long window.
+  0xFFF as a critical ID, gave 3.47 ms against a 1.9 ms bound. 0xFFF is a
+  filler that ROAD uses for constant, aperiodic and very slow IDs. L is now
+  the worst count in any deadline-long window.
 * **"0 % misses" could be false.** Only delivered frames were counted: one
   overloaded run reported 0 % while 10 % of critical frames were dropped.
   Critical frames now have their own queue, and drops and overdue frames
@@ -387,9 +399,11 @@ on 10BASE-T1S is a practical substitute; say so in the paper.
 
 ## 7. Next steps
 
-1. Read the paper and check its assumptions, above all the 2 ms deadline.
-2. Read the full text of references marked (abstract) and confirm those
-   marked (from memory). Re-check the research gap in IEEE Xplore.
+1. Decide the deadline with your supervisor. It changes the main real-traffic
+   claim: conventional PLCA misses 2 ms but not 5 ms.
+2. Read the full text of references marked (abstract) or (not read). All DOIs
+   are confirmed. Read Ahn and Park [20] and do Nascimento et al. [19] first:
+   they are the closest work. Re-check the research gap in IEEE Xplore.
 3. Optional:
    * add AutoHack / can-train-and-test traces for more vehicles
    * find out why non-critical traffic pays, with an isolating experiment

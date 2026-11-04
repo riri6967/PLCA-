@@ -66,6 +66,7 @@ class TestRoad(unittest.TestCase):
         trace = read_candump(path)
         os.remove(path)
         self.assertEqual(select_critical_ids(id_stats(trace), 2), [0x0AA, 0x0FF])
+        self.assertEqual(select_critical_ids(id_stats(trace), 1, skip=1), [0x0FF])
 
     def test_max_in_window(self):
         self.assertEqual(max_in_window([0.0, 0.5, 0.9, 1.0, 5.0], 1.0), 3)

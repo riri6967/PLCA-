@@ -13,10 +13,12 @@ Migration to a zonal 10BASE-T1S segment (assumptions, stated in the paper):
     trace k times with independent random time offsets (each copy = another
     CAN segment on the same zone), which raises the load while keeping the
     real per-ID timing patterns.
-  * Critical flows are chosen by real CAN semantics: among the fastest
-    strictly periodic IDs, the ones with the lowest CAN ID, i.e. the highest
-    bus priority. Aperiodic IDs such as 0xFFF (lowest CAN priority, gaps down
-    to ~1 us) are not eligible even if they are the most frequent.
+  * ROAD does not say which messages are safety-critical, and its ID
+    obfuscation does not preserve arbitration priority, so the choice of
+    critical flows is an assumption: the fastest strictly periodic IDs, with
+    the lowest obfuscated ID only as a repeatable tie-break (`critical_skip`
+    picks others). 0xFFF is not eligible: ROAD uses it as a filler for
+    constant, aperiodic or very slow IDs, so it is not one periodic flow.
   * The guarantee does not assume a period: each critical flow declares the
     largest number of frames seen in any deadline-long window of the trace.
   * Optional "bulk" traffic adds native Ethernet data with large frames
@@ -89,8 +91,12 @@ def id_stats(trace: pd.DataFrame) -> pd.DataFrame:
     return pd.DataFrame(rows).sort_values("rate_hz", ascending=False).reset_index(drop=True)
 
 
-def select_critical_ids(stats: pd.DataFrame, n: int) -> list[int]:
-    """Highest-priority (lowest) CAN IDs among the fastest periodic IDs."""
+def select_critical_ids(stats: pd.DataFrame, n: int, skip: int = 0) -> list[int]:
+    """`n` of the fastest periodic IDs, in ID order, after skipping `skip`.
+
+    The ID order is only a repeatable tie-break: ROAD's IDs are obfuscated
+    and say nothing about bus priority.
+    """
     if n <= 0:
         return []
     periodic = stats[stats.period_p1_s >= 0.5 * stats.period_median_s]
@@ -100,7 +106,7 @@ def select_critical_ids(stats: pd.DataFrame, n: int) -> list[int]:
     near = periodic.period_median_s <= 1.25 * fastest
     first = periodic[near].sort_values("can_id")
     rest = periodic[~near].sort_values(["period_median_s", "can_id"])
-    return [int(c) for c in pd.concat([first, rest]).can_id.head(n)]
+    return [int(c) for c in pd.concat([first, rest]).can_id.iloc[skip:skip + n]]
 
 
 def max_in_window(times: np.ndarray, window_s: float) -> int:
@@ -137,6 +143,7 @@ def make_road_traffic(
     critical_deadline_s: float = 2e-3,
     bulk_load: float = 0.0,
     bulk_nodes: int = 2,
+    critical_skip: int = 0,
 ) -> RoadTraffic:
     """Turn `copies` time-shifted replays of a CAN trace into PLCA traffic."""
     rng = np.random.default_rng(seed)
@@ -144,7 +151,7 @@ def make_road_traffic(
     span = float(trace.t.max())
     if span < duration_s:
         raise ValueError(f"trace is only {span:.1f} s long; use a shorter duration")
-    crit_ids = set(select_critical_ids(stats, n_critical))
+    crit_ids = set(select_critical_ids(stats, n_critical, critical_skip))
 
     # Assign (copy, CAN ID) pairs to nodes, heaviest first, to the least loaded node.
     load = np.zeros(cfg.node_count)

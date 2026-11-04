@@ -12,9 +12,11 @@ Three studies on the mixed-criticality scenario:
                the proof)
   3. topology  sensitivity to node count and TO timer, and the check of the
                analytical bound against the worst simulated latency
+  4. minimum   the shortest deadline the governor can guarantee for each
+               largest frame on the segment (calculated, not simulated)
 
 Outputs in `results/`: tradeoff_deadline.csv, tradeoff_budget.csv,
-tradeoff_topology.csv, tradeoff_deadline.png
+tradeoff_topology.csv, tradeoff_min_deadline.csv, tradeoff_deadline.png
 """
 
 from __future__ import annotations
@@ -46,6 +48,27 @@ BUDGETS = {
     "shrink unless congested": (0.5, 0.5, 0.75, 1.0),
 }
 TOPOLOGIES = ((4, 32), (8, 20), (8, 32), (8, 64), (12, 32), (16, 32))
+
+
+def min_deadline_us(cfg: PLCAConfig, nodes: tuple[int, ...], max_frame: int) -> float:
+    """Shortest deadline the governor accepts, to 1 us, for flows that send at
+    most one 64-byte frame per deadline."""
+    def ok(us: float) -> bool:
+        fl = [CriticalFlow(n, 10e-3, CRITICAL_SIZE, us * 1e-6, 1) for n in nodes]
+        try:
+            SafetyGovernor(cfg, fl, max_frame_bytes=max_frame)
+            return True
+        except GovernorInfeasible:
+            return False
+
+    lo, hi = 1, 20000
+    while lo < hi:
+        mid = (lo + hi) // 2
+        if ok(mid):
+            hi = mid
+        else:
+            lo = mid + 1
+    return float(lo)
 
 
 def flows(deadline_s: float, nodes=CRITICAL_NODES) -> tuple[CriticalFlow, ...]:
@@ -127,6 +150,16 @@ def main() -> None:
         bg = run(pool, budget_job, [(n, l, s, args.duration, args.model) for n in BUDGETS for l in LOADS for s in seeds])
         print("Study 3: topology")
         tp = run(pool, topology_job, [(n, to, l, s, args.duration) for n, to in TOPOLOGIES for l in LOADS for s in seeds])
+
+    cfg = PLCAConfig()
+    minimum = pd.DataFrame([
+        {"max_frame_bytes": size, "critical_flows": n,
+         "min_deadline_us": min_deadline_us(cfg, tuple(range(1, n + 1)), size)}
+        for size in (64, 128, 256, 512, 1024, 1518) for n in (2, 6)
+    ])
+    minimum.to_csv(out / "tradeoff_min_deadline.csv", index=False)
+    print("\nShortest guaranteed deadline (us):")
+    print(minimum.pivot(index="max_frame_bytes", columns="critical_flows", values="min_deadline_us").to_string())
 
     dl.to_csv(out / "tradeoff_deadline.csv", index=False)
     bg.to_csv(out / "tradeoff_budget.csv", index=False)
