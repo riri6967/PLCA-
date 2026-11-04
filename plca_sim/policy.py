@@ -22,6 +22,12 @@ class Observation:
     queue_lengths: list[int]
     critical_waiting: list[int]
     last_cycle_bt: float
+    # Cumulative counters since the start of the simulation.
+    busy_bt: float = 0.0
+    tos_used: int = 0
+    tos_total: int = 0
+    arrived: int = 0
+    dropped: int = 0
 
 
 class Policy:

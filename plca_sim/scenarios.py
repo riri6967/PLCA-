@@ -4,6 +4,8 @@
   Scenario 2 - increasing traffic -> "uniform" and "heterogeneous" load sweep
   Scenario 3 - bursty traffic    -> "bursty"
   Scenario 4 - mixed criticality -> "mixed"
+  Extra      - changing traffic  -> "dynamic" (load/burstiness change every
+                                    20-100 ms; `load` is the maximum level)
 
 `load` is the total offered load as a fraction of the 10 Mb/s bus.
 """
@@ -64,7 +66,42 @@ def make_traffic(
             frames += poisson_traffic(rng, cfg, node, 0.5 * bg_load, horizon, big, big_p)
             frames += bursty_traffic(rng, cfg, node, 0.5 * bg_load, horizon, 6.0, big, big_p)
 
+    elif scenario == "dynamic":
+        frames += _dynamic_traffic(rng, cfg, load, duration_s)
+
     else:
-        raise ValueError(f"unknown scenario {scenario!r}; choose from {SCENARIOS}")
+        raise ValueError(f"unknown scenario {scenario!r}; choose from {ALL_SCENARIOS}")
 
     return frames
+
+
+def _dynamic_traffic(
+    rng: np.random.Generator, cfg: PLCAConfig, max_load: float, duration_s: float
+) -> list[Frame]:
+    """Traffic whose load and burstiness change every 20-100 ms.
+
+    Models a car moving between driving situations (parking, city, highway,
+    diagnostics...). This is where *predicting* the network state matters.
+    """
+    n = cfg.node_count
+    frames: list[Frame] = []
+    t0 = 0.0
+    horizon = cfg.s_to_bt(duration_s)
+    while t0 < horizon:
+        seg = cfg.s_to_bt(rng.uniform(0.02, 0.10))
+        seg = min(seg, horizon - t0)
+        load = rng.uniform(0.05, max_load)
+        burst_share = rng.uniform(0.0, 0.8)
+        weights = rng.dirichlet(np.ones(n))
+        for node in range(n):
+            node_load = load * weights[node]
+            part = poisson_traffic(rng, cfg, node, (1 - burst_share) * node_load, seg)
+            part += bursty_traffic(rng, cfg, node, burst_share * node_load, seg)
+            frames += [Frame(f.node, f.arrival + t0, f.size, f.critical, f.deadline) for f in part]
+        t0 += seg
+    return frames
+
+
+# "dynamic" is used for TinyML training/evaluation and the adaptive comparison;
+# the Phase-3 baseline keeps the four fixed-load scenarios above.
+ALL_SCENARIOS = SCENARIOS + ("dynamic",)

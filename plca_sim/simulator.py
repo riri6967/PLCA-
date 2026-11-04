@@ -106,6 +106,11 @@ def simulate(
             queue_lengths=[len(q) for q in ready],
             critical_waiting=list(n_critical),
             last_cycle_bt=last_cycle,
+            busy_bt=res.busy_bt,
+            tos_used=res.tos_used,
+            tos_total=res.tos_total,
+            arrived=sum(ptr),
+            dropped=len(res.dropped),
         )
         limits = policy.frames_per_to(obs)
 
