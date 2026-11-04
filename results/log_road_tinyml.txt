@@ -1,0 +1,29 @@
+  dyno_drive_winter: 3360 windows
+  dyno_drive_benign_anomaly: 3417 windows
+  dyno_drive_basic_long: 3364 windows
+  dyno_exercise_all_bits: 3426 windows
+  dyno_idle_radio_infotainment: 3369 windows
+  dyno_drive_basic_short: 3361 windows
+  dyno_drive_extended_long: 3386 windows
+  dyno_drive_radio_infotainment: 3361 windows
+  dyno_drive_extended_short: 3373 windows
+  dyno_reverse: 3359 windows
+  highway_street_driving_diagnostics: 3356 windows
+  highway_street_driving_long: 3362 windows
+Collecting windows from 12 logs...
+  40494 windows; states: {0: 9248, 1: 9539, 2: 4176, 3: 17531}
+
+           model            tested_on  windows  accuracy  macro_f1  within_one_class
+ synthetic model    ROAD (unseen log)    40494     0.778     0.772             0.893
+       road only    ROAD (unseen log)    40494     0.816     0.815             0.904
+synthetic + road    ROAD (unseen log)    40494     0.783     0.773             0.891
+     persistence    ROAD (unseen log)    40494     0.782     0.774             0.880
+synthetic + road synthetic test seeds    16590     0.614     0.575               NaN
+ synthetic model synthetic test seeds    16590     0.624     0.583               NaN
+
+Final model: 31 nodes, depth 4, trained without ('highway_street_driving_long', 'dyno_drive_winter', 'dyno_idle_radio_infotainment')
+Done in 55 s. Results saved in 'results/'.
+
+real	1m0.358s
+user	0m0.015s
+sys	0m0.047s

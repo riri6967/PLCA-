@@ -1,0 +1,111 @@
+Study 1: cost of the guarantee vs deadline
+Study 2: budget adaptation
+Study 3: topology
+
+                               noncritical_latency_mean_us  critical_latency_max_us  critical_deadline_miss_rate  loss_rate  budget_us  bound_us
+load deadline_ms policy                                                                                                                         
+0.5  1.8         conventional                    5826.7497               31878.0701                       0.1772     0.0001        NaN       NaN
+                 governor                        6387.0065                1444.0284                       0.0000     0.0000     1279.2    1710.0
+     2.0         conventional                    5826.7497               31878.0701                       0.1692     0.0001        NaN       NaN
+                 governor                        6387.0065                1444.0284                       0.0000     0.0000     1469.2    1900.0
+     2.5         conventional                    5826.7497               31878.0701                       0.1488     0.0001        NaN       NaN
+                 governor                        6360.9763                1859.2998                       0.0000     0.0000     1742.6    2375.0
+     3.0         conventional                    5826.7497               31878.0701                       0.1309     0.0001        NaN       NaN
+                 governor                        6335.1383                2302.1106                       0.0000     0.0000     2217.6    2850.0
+     4.0         conventional                    5826.7497               31878.0701                       0.1085     0.0001        NaN       NaN
+                 governor                        6327.0148                3082.4306                       0.0000     0.0000     2966.0    3800.0
+     5.0         conventional                    5826.7497               31878.0701                       0.0936     0.0001        NaN       NaN
+                 governor                        6334.4686                3722.8722                       0.0000     0.0000     3714.4    4750.0
+     7.5         conventional                    5826.7497               31878.0701                       0.0670     0.0001        NaN       NaN
+                 governor                        6330.5552                4237.6859                       0.0000     0.0000     5484.6    7125.0
+     10.0        conventional                    5826.7497               31878.0701                       0.0512     0.0001        NaN       NaN
+                 governor                        6330.5712                4508.5906                       0.0000     0.0000     7456.4    9500.0
+0.7  1.8         conventional                    7279.2371               65132.3621                       0.3779     0.0049        NaN       NaN
+                 governor                        8674.0721                1443.0322                       0.0000     0.0000     1279.2    1710.0
+     2.0         conventional                    7279.2371               65132.3621                       0.3665     0.0049        NaN       NaN
+                 governor                        8674.0721                1443.0322                       0.0000     0.0000     1469.2    1900.0
+     2.5         conventional                    7279.2371               65132.3621                       0.3348     0.0049        NaN       NaN
+                 governor                        8556.4143                1868.8306                       0.0000     0.0000     1742.6    2375.0
+     3.0         conventional                    7279.2371               65132.3621                       0.3131     0.0049        NaN       NaN
+                 governor                        8507.1737                2320.7420                       0.0000     0.0000     2217.6    2850.0
+     4.0         conventional                    7279.2371               65132.3621                       0.2763     0.0049        NaN       NaN
+                 governor                        8468.5847                3172.7556                       0.0000     0.0000     2966.0    3800.0
+     5.0         conventional                    7279.2371               65132.3621                       0.2475     0.0049        NaN       NaN
+                 governor                        8442.0940                3828.1906                       0.0000     0.0000     3714.4    4750.0
+     7.5         conventional                    7279.2371               65132.3621                       0.1960     0.0049        NaN       NaN
+                 governor                        8431.2600                5220.6620                       0.0000     0.0000     5484.6    7125.0
+     10.0        conventional                    7279.2371               65132.3621                       0.1564     0.0049        NaN       NaN
+                 governor                        8425.3384                5843.4236                       0.0000     0.0000     7456.4    9500.0
+0.9  1.8         conventional                   12889.6393              193065.0821                       0.7359     0.0864        NaN       NaN
+                 governor                       23435.0283                1451.8127                       0.0000     0.0012     1279.2    1710.0
+     2.0         conventional                   12889.6393              193065.0821                       0.7272     0.0864        NaN       NaN
+                 governor                       23435.0283                1451.8127                       0.0000     0.0012     1469.2    1900.0
+     2.5         conventional                   12889.6393              193065.0821                       0.7068     0.0864        NaN       NaN
+                 governor                       22866.6199                1875.3884                       0.0000     0.0011     1742.6    2375.0
+     3.0         conventional                   12889.6393              193065.0821                       0.6893     0.0864        NaN       NaN
+                 governor                       22532.0051                2329.3549                       0.0000     0.0011     2217.6    2850.0
+     4.0         conventional                   12889.6393              193065.0821                       0.6634     0.0864        NaN       NaN
+                 governor                       22307.9661                3203.8510                       0.0000     0.0010     2966.0    3800.0
+     5.0         conventional                   12889.6393              193065.0821                       0.6428     0.0864        NaN       NaN
+                 governor                       22283.3985                3999.0212                       0.0000     0.0010     3714.4    4750.0
+     7.5         conventional                   12889.6393              193065.0821                       0.6004     0.0864        NaN       NaN
+                 governor                       22111.7791                5734.9106                       0.0000     0.0010     5484.6    7125.0
+     10.0        conventional                   12889.6393              193065.0821                       0.5682     0.0864        NaN       NaN
+                 governor                       22033.3251                6454.5689                       0.0000     0.0010     7456.4    9500.0
+
+                              noncritical_latency_mean_us  critical_latency_max_us  critical_deadline_miss_rate  loss_rate  latency_p99_us
+load variant                                                                                                                              
+0.5  full budget                                6374.4681                1444.3535                          0.0     0.0000      24249.6891
+     shrink unless congested                    6379.2113                1443.2220                          0.0     0.0000      24218.5570
+     shrink when low                            6378.8468                1446.9020                          0.0     0.0000      24227.0754
+0.7  full budget                                8632.7552                1448.8998                          0.0     0.0000      39222.3482
+     shrink unless congested                    8646.8652                1447.7710                          0.0     0.0000      39086.8397
+     shrink when low                            8648.8973                1446.1047                          0.0     0.0000      39433.2368
+0.9  full budget                               22968.8803                1454.8998                          0.0     0.0012     156659.7045
+     shrink unless congested                   22974.6222                1456.5798                          0.0     0.0012     156959.0797
+     shrink when low                           22968.8021                1458.8998                          0.0     0.0012     156665.4965
+
+                                     noncritical_latency_mean_us  critical_latency_max_us  critical_deadline_miss_rate  loss_rate  bound_us
+nodes to_timer_bt load policy                                                                                                              
+4     32          0.5  conventional                    4870.1580               13313.2421                       0.1152     0.0000       NaN
+                       governor                        5093.9330                1418.1798                       0.0000     0.0000    1900.0
+                  0.7  conventional                    7257.2108               43783.9484                       0.3377     0.0015       NaN
+                       governor                        8307.6662                1430.8421                       0.0000     0.0000    1900.0
+                  0.9  conventional                   18758.9005              108810.2711                       0.6761     0.0456       NaN
+                       governor                       19430.7898                1430.9884                       0.0000     0.0052    1900.0
+8     20          0.5  conventional                    5790.0663               31576.9501                       0.1666     0.0000       NaN
+                       governor                        6315.9863                1427.9506                       0.0000     0.0000    1900.0
+                  0.7  conventional                    7237.7628               64949.4821                       0.3579     0.0047       NaN
+                       governor                        8551.2262                1438.1020                       0.0000     0.0000    1900.0
+                  0.9  conventional                   12808.9074              191503.6421                       0.7175     0.0844       NaN
+                       governor                       22557.1099                1446.9025                       0.0000     0.0010    1900.0
+      32          0.5  conventional                    5826.7497               31878.0701                       0.1692     0.0001       NaN
+                       governor                        6387.0065                1444.0284                       0.0000     0.0000    1900.0
+                  0.7  conventional                    7279.2371               65132.3621                       0.3665     0.0049       NaN
+                       governor                        8674.0721                1443.0322                       0.0000     0.0000    1900.0
+                  0.9  conventional                   12889.6393              193065.0821                       0.7272     0.0864       NaN
+                       governor                       23435.0283                1451.8127                       0.0000     0.0012    1900.0
+      64          0.5  conventional                    5927.1083               32425.0301                       0.1767     0.0002       NaN
+                       governor                        6571.5891                1456.0612                       0.0000     0.0000    1900.0
+                  0.7  conventional                    7387.1433               67031.1621                       0.3811     0.0053       NaN
+                       governor                        9012.1747                1456.8333                       0.0000     0.0000    1900.0
+                  0.9  conventional                   13063.2074              193303.1237                       0.7514     0.0919       NaN
+                       governor                       25027.7051                1462.7973                       0.0000     0.0023    1900.0
+12    32          0.5  conventional                    4707.2733               37915.9621                       0.1480     0.0000       NaN
+                       governor                        5297.7431                1445.7221                       0.0000     0.0000    1900.0
+                  0.7  conventional                    8129.9829               71762.3621                       0.4318     0.0075       NaN
+                       governor                       10189.4483                1459.6220                       0.0000     0.0000    1900.0
+                  0.9  conventional                   13105.1938              205009.6421                       0.7494     0.0987       NaN
+                       governor                       25883.2140                1460.8421                       0.0000     0.0011    1900.0
+16    32          0.5  conventional                    6024.5813               36577.5621                       0.2078     0.0000       NaN
+                       governor                        6781.2837                1472.2437                       0.0000     0.0000    1900.0
+                  0.7  conventional                    8410.2658               82043.1151                       0.4403     0.0159       NaN
+                       governor                       11342.6256                1477.2975                       0.0000     0.0000    1900.0
+                  0.9  conventional                   11213.9258              204880.1884                       0.7278     0.0694       NaN
+                       governor                       18616.5637                1475.5375                       0.0000     0.0000    1900.0
+
+Done in 56 s. Results saved in 'results/'.
+
+real	0m59.675s
+user	0m0.015s
+sys	0m0.047s

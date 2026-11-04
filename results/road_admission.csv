@@ -1,0 +1,601 @@
+log,experiment,copies,seed,offered_load,admitted,flows,bound_us,budget_us
+dyno_drive_basic_long,A: CAN only,1,0,0.1607088,True,2,1900.0,1670.8
+dyno_drive_basic_long,A: CAN only,1,1,0.1607424,True,2,1900.0,1670.8
+dyno_drive_basic_long,A: CAN only,1,2,0.1606416,True,2,1900.0,1670.8
+dyno_drive_basic_long,A: CAN only,1,3,0.1607088,True,2,1900.0,1670.8
+dyno_drive_basic_long,A: CAN only,1,4,0.1606416,True,2,1900.0,1670.8
+dyno_drive_basic_long,A: CAN only,2,0,0.3214848,True,4,1900.0,1536.4
+dyno_drive_basic_long,A: CAN only,2,1,0.3213168,True,4,1900.0,1536.4
+dyno_drive_basic_long,A: CAN only,2,2,0.3213168,True,4,1900.0,1536.4
+dyno_drive_basic_long,A: CAN only,2,3,0.3213168,True,4,1900.0,1536.4
+dyno_drive_basic_long,A: CAN only,2,4,0.321216,True,4,1900.0,1536.4
+dyno_drive_basic_long,A: CAN only,4,0,0.6428352,True,8,1900.0,1267.6
+dyno_drive_basic_long,A: CAN only,4,1,0.6426672,True,8,1900.0,1267.6
+dyno_drive_basic_long,A: CAN only,4,2,0.6428352,True,8,1900.0,1267.6
+dyno_drive_basic_long,A: CAN only,4,3,0.6426,True,8,1900.0,1267.6
+dyno_drive_basic_long,A: CAN only,4,4,0.6425664,True,8,1900.0,1267.6
+dyno_drive_basic_long,A: CAN only,6,0,0.9642864,True,12,1900.0,931.6
+dyno_drive_basic_long,A: CAN only,6,1,0.9638832,True,12,1900.0,931.6
+dyno_drive_basic_long,A: CAN only,6,2,0.9642192,True,12,1900.0,931.6
+dyno_drive_basic_long,A: CAN only,6,3,0.9643872,True,12,1900.0,931.6
+dyno_drive_basic_long,A: CAN only,6,4,0.9641184,True,12,1900.0,931.6
+dyno_drive_basic_long,A: CAN only,8,0,1.2857376,True,16,1900.0,662.8
+dyno_drive_basic_long,A: CAN only,8,1,1.2852336,True,16,1900.0,662.8
+dyno_drive_basic_long,A: CAN only,8,2,1.2856032,True,16,1900.0,662.8
+dyno_drive_basic_long,A: CAN only,8,3,1.2856368,True,16,1900.0,662.8
+dyno_drive_basic_long,A: CAN only,8,4,1.2854016,True,16,1900.0,662.8
+dyno_drive_basic_long,B: CAN + bulk Ethernet,1,0,0.4805752,True,2,1900.0,1670.8
+dyno_drive_basic_long,B: CAN + bulk Ethernet,1,1,0.3879168,True,2,1900.0,1670.8
+dyno_drive_basic_long,B: CAN + bulk Ethernet,1,2,0.4232128,True,2,1900.0,1670.8
+dyno_drive_basic_long,B: CAN + bulk Ethernet,1,3,0.5105528,True,2,1900.0,1670.8
+dyno_drive_basic_long,B: CAN + bulk Ethernet,1,4,0.3907992,True,2,1900.0,1670.8
+dyno_drive_basic_long,B: CAN + bulk Ethernet,2,0,0.6393008,True,4,1900.0,1536.4
+dyno_drive_basic_long,B: CAN + bulk Ethernet,2,1,0.5484912,True,4,1900.0,1536.4
+dyno_drive_basic_long,B: CAN + bulk Ethernet,2,2,0.591324,True,4,1900.0,1536.4
+dyno_drive_basic_long,B: CAN + bulk Ethernet,2,3,0.6520672,True,4,1900.0,1536.4
+dyno_drive_basic_long,B: CAN + bulk Ethernet,2,4,0.5598032,True,4,1900.0,1536.4
+dyno_drive_basic_long,B: CAN + bulk Ethernet,3,0,0.7989096,True,6,1900.0,1402.0
+dyno_drive_basic_long,B: CAN + bulk Ethernet,3,1,0.7149808,True,6,1900.0,1402.0
+dyno_drive_basic_long,B: CAN + bulk Ethernet,3,2,0.7526784,True,6,1900.0,1402.0
+dyno_drive_basic_long,B: CAN + bulk Ethernet,3,3,0.8040784,True,6,1900.0,1402.0
+dyno_drive_basic_long,B: CAN + bulk Ethernet,3,4,0.747988,True,6,1900.0,1402.0
+dyno_drive_basic_long,B: CAN + bulk Ethernet,4,0,0.8886976,True,8,1900.0,1267.6
+dyno_drive_basic_long,B: CAN + bulk Ethernet,4,1,0.8710728,True,8,1900.0,1267.6
+dyno_drive_basic_long,B: CAN + bulk Ethernet,4,2,0.9167464,True,8,1900.0,1267.6
+dyno_drive_basic_long,B: CAN + bulk Ethernet,4,3,0.971292,True,8,1900.0,1267.6
+dyno_drive_basic_long,B: CAN + bulk Ethernet,4,4,0.897208,True,8,1900.0,1267.6
+dyno_drive_basic_long,B: CAN + bulk Ethernet,5,0,1.0427168,False,10,,
+dyno_drive_basic_long,B: CAN + bulk Ethernet,5,1,1.0650232,False,10,,
+dyno_drive_basic_long,B: CAN + bulk Ethernet,5,2,1.0832808,False,10,,
+dyno_drive_basic_long,B: CAN + bulk Ethernet,5,3,1.1327584,False,10,,
+dyno_drive_basic_long,B: CAN + bulk Ethernet,5,4,1.0537608,False,10,,
+dyno_drive_basic_short,A: CAN only,1,0,0.1607088,True,2,1900.0,1670.8
+dyno_drive_basic_short,A: CAN only,1,1,0.1606416,True,2,1900.0,1670.8
+dyno_drive_basic_short,A: CAN only,1,2,0.1610784,True,2,1900.0,1670.8
+dyno_drive_basic_short,A: CAN only,1,3,0.1611456,True,2,1900.0,1670.8
+dyno_drive_basic_short,A: CAN only,1,4,0.161112,True,2,1900.0,1670.8
+dyno_drive_basic_short,A: CAN only,2,0,0.3216192,True,4,1900.0,1536.4
+dyno_drive_basic_short,A: CAN only,2,1,0.3216864,True,4,1900.0,1536.4
+dyno_drive_basic_short,A: CAN only,2,2,0.3218208,True,4,1900.0,1536.4
+dyno_drive_basic_short,A: CAN only,2,3,0.3218544,True,4,1900.0,1536.4
+dyno_drive_basic_short,A: CAN only,2,4,0.3217536,True,4,1900.0,1536.4
+dyno_drive_basic_short,A: CAN only,4,0,0.6430368,True,8,1900.0,1267.6
+dyno_drive_basic_short,A: CAN only,4,1,0.643776,True,8,1900.0,1267.6
+dyno_drive_basic_short,A: CAN only,4,2,0.6433056,True,8,1900.0,1267.6
+dyno_drive_basic_short,A: CAN only,4,3,0.6430704,True,8,1900.0,1267.6
+dyno_drive_basic_short,A: CAN only,4,4,0.6431376,True,8,1900.0,1267.6
+dyno_drive_basic_short,A: CAN only,6,0,0.9644544,True,12,1900.0,931.6
+dyno_drive_basic_short,A: CAN only,6,1,0.9650592,True,12,1900.0,931.6
+dyno_drive_basic_short,A: CAN only,6,2,0.9646224,True,12,1900.0,931.6
+dyno_drive_basic_short,A: CAN only,6,3,0.9643536,True,12,1900.0,931.6
+dyno_drive_basic_short,A: CAN only,6,4,0.9644544,True,12,1900.0,931.6
+dyno_drive_basic_short,A: CAN only,8,0,1.2858384,True,16,1900.0,662.8
+dyno_drive_basic_short,A: CAN only,8,1,1.2864768,True,16,1900.0,662.8
+dyno_drive_basic_short,A: CAN only,8,2,1.2860736,True,16,1900.0,662.8
+dyno_drive_basic_short,A: CAN only,8,3,1.2856704,True,16,1900.0,662.8
+dyno_drive_basic_short,A: CAN only,8,4,1.285872,True,16,1900.0,662.8
+dyno_drive_basic_short,B: CAN + bulk Ethernet,1,0,0.4805752,True,2,1900.0,1670.8
+dyno_drive_basic_short,B: CAN + bulk Ethernet,1,1,0.387816,True,2,1900.0,1670.8
+dyno_drive_basic_short,B: CAN + bulk Ethernet,1,2,0.4236496,True,2,1900.0,1670.8
+dyno_drive_basic_short,B: CAN + bulk Ethernet,1,3,0.5109896,True,2,1900.0,1670.8
+dyno_drive_basic_short,B: CAN + bulk Ethernet,1,4,0.3912696,True,2,1900.0,1670.8
+dyno_drive_basic_short,B: CAN + bulk Ethernet,2,0,0.6394352,True,4,1900.0,1536.4
+dyno_drive_basic_short,B: CAN + bulk Ethernet,2,1,0.5488608,True,4,1900.0,1536.4
+dyno_drive_basic_short,B: CAN + bulk Ethernet,2,2,0.591828,True,4,1900.0,1536.4
+dyno_drive_basic_short,B: CAN + bulk Ethernet,2,3,0.6526048,True,4,1900.0,1536.4
+dyno_drive_basic_short,B: CAN + bulk Ethernet,2,4,0.5603408,True,4,1900.0,1536.4
+dyno_drive_basic_short,B: CAN + bulk Ethernet,3,0,0.7991112,True,6,1900.0,1402.0
+dyno_drive_basic_short,B: CAN + bulk Ethernet,3,1,0.7154176,True,6,1900.0,1402.0
+dyno_drive_basic_short,B: CAN + bulk Ethernet,3,2,0.753216,True,6,1900.0,1402.0
+dyno_drive_basic_short,B: CAN + bulk Ethernet,3,3,0.8045152,True,6,1900.0,1402.0
+dyno_drive_basic_short,B: CAN + bulk Ethernet,3,4,0.748492,True,6,1900.0,1402.0
+dyno_drive_basic_short,B: CAN + bulk Ethernet,4,0,0.8888992,True,8,1900.0,1267.6
+dyno_drive_basic_short,B: CAN + bulk Ethernet,4,1,0.8721816,True,8,1900.0,1267.6
+dyno_drive_basic_short,B: CAN + bulk Ethernet,4,2,0.9172168,True,8,1900.0,1267.6
+dyno_drive_basic_short,B: CAN + bulk Ethernet,4,3,0.9717624,True,8,1900.0,1267.6
+dyno_drive_basic_short,B: CAN + bulk Ethernet,4,4,0.8977792,True,8,1900.0,1267.6
+dyno_drive_basic_short,B: CAN + bulk Ethernet,5,0,1.0428176,False,10,,
+dyno_drive_basic_short,B: CAN + bulk Ethernet,5,1,1.0662328,False,10,,
+dyno_drive_basic_short,B: CAN + bulk Ethernet,5,2,1.0837176,False,10,,
+dyno_drive_basic_short,B: CAN + bulk Ethernet,5,3,1.133128,False,10,,
+dyno_drive_basic_short,B: CAN + bulk Ethernet,5,4,1.054164,False,10,,
+dyno_drive_benign_anomaly,A: CAN only,1,0,0.141288,True,2,1900.0,1670.8
+dyno_drive_benign_anomaly,A: CAN only,1,1,0.0,True,2,1900.0,1670.8
+dyno_drive_benign_anomaly,A: CAN only,1,2,0.0532896,True,2,1900.0,1670.8
+dyno_drive_benign_anomaly,A: CAN only,1,3,0.053592,True,2,1900.0,1670.8
+dyno_drive_benign_anomaly,A: CAN only,1,4,0.1607424,True,2,1900.0,1670.8
+dyno_drive_benign_anomaly,A: CAN only,2,0,0.1948464,True,4,1900.0,1536.4
+dyno_drive_benign_anomaly,A: CAN only,2,1,0.1606416,True,4,1900.0,1536.4
+dyno_drive_benign_anomaly,A: CAN only,2,2,0.1069152,True,4,1900.0,1536.4
+dyno_drive_benign_anomaly,A: CAN only,2,3,0.1072512,True,4,1900.0,1536.4
+dyno_drive_benign_anomaly,A: CAN only,2,4,0.1607424,True,4,1900.0,1536.4
+dyno_drive_benign_anomaly,A: CAN only,4,0,0.4187232,True,8,1900.0,1267.6
+dyno_drive_benign_anomaly,A: CAN only,4,1,0.3740352,True,8,1900.0,1267.6
+dyno_drive_benign_anomaly,A: CAN only,4,2,0.3212832,True,8,1900.0,1267.6
+dyno_drive_benign_anomaly,A: CAN only,4,3,0.3207792,True,8,1900.0,1267.6
+dyno_drive_benign_anomaly,A: CAN only,4,4,0.3752448,True,8,1900.0,1267.6
+dyno_drive_benign_anomaly,A: CAN only,6,0,0.7401408,True,12,1900.0,931.6
+dyno_drive_benign_anomaly,A: CAN only,6,1,0.4789344,True,12,1900.0,931.6
+dyno_drive_benign_anomaly,A: CAN only,6,2,0.4818576,True,12,1900.0,931.6
+dyno_drive_benign_anomaly,A: CAN only,6,3,0.4259808,True,12,1900.0,931.6
+dyno_drive_benign_anomaly,A: CAN only,6,4,0.4290384,True,12,1900.0,931.6
+dyno_drive_benign_anomaly,A: CAN only,8,0,0.9008832,True,16,1900.0,662.8
+dyno_drive_benign_anomaly,A: CAN only,8,1,0.6931344,True,16,1900.0,662.8
+dyno_drive_benign_anomaly,A: CAN only,8,2,0.569352,True,16,1900.0,662.8
+dyno_drive_benign_anomaly,A: CAN only,8,3,0.4755072,True,16,1900.0,662.8
+dyno_drive_benign_anomaly,A: CAN only,8,4,0.6434736,True,16,1900.0,662.8
+dyno_drive_benign_anomaly,B: CAN + bulk Ethernet,1,0,0.4611544,True,2,1900.0,1670.8
+dyno_drive_benign_anomaly,B: CAN + bulk Ethernet,1,1,0.2271744,True,2,1900.0,1670.8
+dyno_drive_benign_anomaly,B: CAN + bulk Ethernet,1,2,0.3158608,True,2,1900.0,1670.8
+dyno_drive_benign_anomaly,B: CAN + bulk Ethernet,1,3,0.403436,True,2,1900.0,1670.8
+dyno_drive_benign_anomaly,B: CAN + bulk Ethernet,1,4,0.3909,True,2,1900.0,1670.8
+dyno_drive_benign_anomaly,B: CAN + bulk Ethernet,2,0,0.5126624,True,4,1900.0,1536.4
+dyno_drive_benign_anomaly,B: CAN + bulk Ethernet,2,1,0.387816,True,4,1900.0,1536.4
+dyno_drive_benign_anomaly,B: CAN + bulk Ethernet,2,2,0.3769224,True,4,1900.0,1536.4
+dyno_drive_benign_anomaly,B: CAN + bulk Ethernet,2,3,0.4380016,True,4,1900.0,1536.4
+dyno_drive_benign_anomaly,B: CAN + bulk Ethernet,2,4,0.3993296,True,4,1900.0,1536.4
+dyno_drive_benign_anomaly,B: CAN + bulk Ethernet,3,0,0.5747976,True,6,1900.0,1402.0
+dyno_drive_benign_anomaly,B: CAN + bulk Ethernet,3,1,0.446248,True,6,1900.0,1402.0
+dyno_drive_benign_anomaly,B: CAN + bulk Ethernet,3,2,0.5383104,True,6,1900.0,1402.0
+dyno_drive_benign_anomaly,B: CAN + bulk Ethernet,3,3,0.5901472,True,6,1900.0,1402.0
+dyno_drive_benign_anomaly,B: CAN + bulk Ethernet,3,4,0.587548,True,6,1900.0,1402.0
+dyno_drive_benign_anomaly,B: CAN + bulk Ethernet,4,0,0.6645856,True,8,1900.0,1267.6
+dyno_drive_benign_anomaly,B: CAN + bulk Ethernet,4,1,0.6024408,True,8,1900.0,1267.6
+dyno_drive_benign_anomaly,B: CAN + bulk Ethernet,4,2,0.5951944,True,8,1900.0,1267.6
+dyno_drive_benign_anomaly,B: CAN + bulk Ethernet,4,3,0.6494712,True,8,1900.0,1267.6
+dyno_drive_benign_anomaly,B: CAN + bulk Ethernet,4,4,0.6298864,True,8,1900.0,1267.6
+dyno_drive_benign_anomaly,B: CAN + bulk Ethernet,5,0,0.8184704,False,10,,
+dyno_drive_benign_anomaly,B: CAN + bulk Ethernet,5,1,0.6870568,False,10,,
+dyno_drive_benign_anomaly,B: CAN + bulk Ethernet,5,2,0.60102,False,10,,
+dyno_drive_benign_anomaly,B: CAN + bulk Ethernet,5,3,0.7036864,False,10,,
+dyno_drive_benign_anomaly,B: CAN + bulk Ethernet,5,4,0.625596,False,10,,
+dyno_drive_extended_long,A: CAN only,1,0,0.1610448,True,2,1900.0,1670.8
+dyno_drive_extended_long,A: CAN only,1,1,0.1606752,True,2,1900.0,1670.8
+dyno_drive_extended_long,A: CAN only,1,2,0.1412544,True,2,1900.0,1670.8
+dyno_drive_extended_long,A: CAN only,1,3,0.0162624,True,2,1900.0,1670.8
+dyno_drive_extended_long,A: CAN only,1,4,0.1610448,True,2,1900.0,1670.8
+dyno_drive_extended_long,A: CAN only,2,0,0.3022992,True,4,1900.0,1536.4
+dyno_drive_extended_long,A: CAN only,2,1,0.3212496,True,4,1900.0,1536.4
+dyno_drive_extended_long,A: CAN only,2,2,0.2825424,True,4,1900.0,1536.4
+dyno_drive_extended_long,A: CAN only,2,3,0.1231776,True,4,1900.0,1536.4
+dyno_drive_extended_long,A: CAN only,2,4,0.3219216,True,4,1900.0,1536.4
+dyno_drive_extended_long,A: CAN only,4,0,0.4099536,True,8,1900.0,1267.6
+dyno_drive_extended_long,A: CAN only,4,1,0.5353488,True,8,1900.0,1267.6
+dyno_drive_extended_long,A: CAN only,4,2,0.4594128,True,8,1900.0,1267.6
+dyno_drive_extended_long,A: CAN only,4,3,0.4444608,True,8,1900.0,1267.6
+dyno_drive_extended_long,A: CAN only,4,4,0.5203296,True,8,1900.0,1267.6
+dyno_drive_extended_long,A: CAN only,6,0,0.7314384,True,12,1900.0,931.6
+dyno_drive_extended_long,A: CAN only,6,1,0.8378496,True,12,1900.0,931.6
+dyno_drive_extended_long,A: CAN only,6,2,0.7807632,True,12,1900.0,931.6
+dyno_drive_extended_long,A: CAN only,6,3,0.6218016,True,12,1900.0,931.6
+dyno_drive_extended_long,A: CAN only,6,4,0.8422176,True,12,1900.0,931.6
+dyno_drive_extended_long,A: CAN only,8,0,1.0529568,True,16,1900.0,662.8
+dyno_drive_extended_long,A: CAN only,8,1,1.1598384,True,16,1900.0,662.8
+dyno_drive_extended_long,A: CAN only,8,2,0.8506848,True,16,1900.0,662.8
+dyno_drive_extended_long,A: CAN only,8,3,0.8350608,True,16,1900.0,662.8
+dyno_drive_extended_long,A: CAN only,8,4,1.0191888,True,16,1900.0,662.8
+dyno_drive_extended_long,B: CAN + bulk Ethernet,1,0,0.4809112,True,2,1900.0,1670.8
+dyno_drive_extended_long,B: CAN + bulk Ethernet,1,1,0.3878496,True,2,1900.0,1670.8
+dyno_drive_extended_long,B: CAN + bulk Ethernet,1,2,0.4038256,True,2,1900.0,1670.8
+dyno_drive_extended_long,B: CAN + bulk Ethernet,1,3,0.3661064,True,2,1900.0,1670.8
+dyno_drive_extended_long,B: CAN + bulk Ethernet,1,4,0.3912024,True,2,1900.0,1670.8
+dyno_drive_extended_long,B: CAN + bulk Ethernet,2,0,0.6201152,True,4,1900.0,1536.4
+dyno_drive_extended_long,B: CAN + bulk Ethernet,2,1,0.548424,True,4,1900.0,1536.4
+dyno_drive_extended_long,B: CAN + bulk Ethernet,2,2,0.5525496,True,4,1900.0,1536.4
+dyno_drive_extended_long,B: CAN + bulk Ethernet,2,3,0.453928,True,4,1900.0,1536.4
+dyno_drive_extended_long,B: CAN + bulk Ethernet,2,4,0.5605088,True,4,1900.0,1536.4
+dyno_drive_extended_long,B: CAN + bulk Ethernet,3,0,0.6726744,True,6,1900.0,1402.0
+dyno_drive_extended_long,B: CAN + bulk Ethernet,3,1,0.6076624,True,6,1900.0,1402.0
+dyno_drive_extended_long,B: CAN + bulk Ethernet,3,2,0.7138032,True,6,1900.0,1402.0
+dyno_drive_extended_long,B: CAN + bulk Ethernet,3,3,0.6059728,True,6,1900.0,1402.0
+dyno_drive_extended_long,B: CAN + bulk Ethernet,3,4,0.748828,True,6,1900.0,1402.0
+dyno_drive_extended_long,B: CAN + bulk Ethernet,4,0,0.655816,True,8,1900.0,1267.6
+dyno_drive_extended_long,B: CAN + bulk Ethernet,4,1,0.7637544,True,8,1900.0,1267.6
+dyno_drive_extended_long,B: CAN + bulk Ethernet,4,2,0.733324,True,8,1900.0,1267.6
+dyno_drive_extended_long,B: CAN + bulk Ethernet,4,3,0.7731528,True,8,1900.0,1267.6
+dyno_drive_extended_long,B: CAN + bulk Ethernet,4,4,0.7749712,True,8,1900.0,1267.6
+dyno_drive_extended_long,B: CAN + bulk Ethernet,5,0,0.8097344,False,10,,
+dyno_drive_extended_long,B: CAN + bulk Ethernet,5,1,0.9383848,False,10,,
+dyno_drive_extended_long,B: CAN + bulk Ethernet,5,2,0.899724,False,10,,
+dyno_drive_extended_long,B: CAN + bulk Ethernet,5,3,0.7900384,False,10,,
+dyno_drive_extended_long,B: CAN + bulk Ethernet,5,4,0.9311544,False,10,,
+dyno_drive_extended_short,A: CAN only,1,0,0.1607424,True,2,1900.0,1670.8
+dyno_drive_extended_short,A: CAN only,1,1,0.1607424,True,2,1900.0,1670.8
+dyno_drive_extended_short,A: CAN only,1,2,0.1609776,True,2,1900.0,1670.8
+dyno_drive_extended_short,A: CAN only,1,3,0.1617504,True,2,1900.0,1670.8
+dyno_drive_extended_short,A: CAN only,1,4,0.160944,True,2,1900.0,1670.8
+dyno_drive_extended_short,A: CAN only,2,0,0.3216864,True,4,1900.0,1536.4
+dyno_drive_extended_short,A: CAN only,2,1,0.3214848,True,4,1900.0,1536.4
+dyno_drive_extended_short,A: CAN only,2,2,0.3218208,True,4,1900.0,1536.4
+dyno_drive_extended_short,A: CAN only,2,3,0.3224928,True,4,1900.0,1536.4
+dyno_drive_extended_short,A: CAN only,2,4,0.3216192,True,4,1900.0,1536.4
+dyno_drive_extended_short,A: CAN only,4,0,0.4289712,True,8,1900.0,1267.6
+dyno_drive_extended_short,A: CAN only,4,1,0.6429696,True,8,1900.0,1267.6
+dyno_drive_extended_short,A: CAN only,4,2,0.6433728,True,8,1900.0,1267.6
+dyno_drive_extended_short,A: CAN only,4,3,0.6442464,True,8,1900.0,1267.6
+dyno_drive_extended_short,A: CAN only,4,4,0.644112,True,8,1900.0,1267.6
+dyno_drive_extended_short,A: CAN only,6,0,0.7506912,True,12,1900.0,931.6
+dyno_drive_extended_short,A: CAN only,6,1,0.9646224,True,12,1900.0,931.6
+dyno_drive_extended_short,A: CAN only,6,2,0.9649248,True,12,1900.0,931.6
+dyno_drive_extended_short,A: CAN only,6,3,0.9657984,True,12,1900.0,931.6
+dyno_drive_extended_short,A: CAN only,6,4,0.9656976,True,12,1900.0,931.6
+dyno_drive_extended_short,A: CAN only,8,0,1.0722768,True,16,1900.0,662.8
+dyno_drive_extended_short,A: CAN only,8,1,1.2865776,True,16,1900.0,662.8
+dyno_drive_extended_short,A: CAN only,8,2,1.179864,True,16,1900.0,662.8
+dyno_drive_extended_short,A: CAN only,8,3,1.2879552,True,16,1900.0,662.8
+dyno_drive_extended_short,A: CAN only,8,4,1.2884256,True,16,1900.0,662.8
+dyno_drive_extended_short,B: CAN + bulk Ethernet,1,0,0.4806088,True,2,1900.0,1670.8
+dyno_drive_extended_short,B: CAN + bulk Ethernet,1,1,0.3879168,True,2,1900.0,1670.8
+dyno_drive_extended_short,B: CAN + bulk Ethernet,1,2,0.4235488,True,2,1900.0,1670.8
+dyno_drive_extended_short,B: CAN + bulk Ethernet,1,3,0.5115944,True,2,1900.0,1670.8
+dyno_drive_extended_short,B: CAN + bulk Ethernet,1,4,0.3911016,True,2,1900.0,1670.8
+dyno_drive_extended_short,B: CAN + bulk Ethernet,2,0,0.6395024,True,4,1900.0,1536.4
+dyno_drive_extended_short,B: CAN + bulk Ethernet,2,1,0.5486592,True,4,1900.0,1536.4
+dyno_drive_extended_short,B: CAN + bulk Ethernet,2,2,0.591828,True,4,1900.0,1536.4
+dyno_drive_extended_short,B: CAN + bulk Ethernet,2,3,0.6532432,True,4,1900.0,1536.4
+dyno_drive_extended_short,B: CAN + bulk Ethernet,2,4,0.5602064,True,4,1900.0,1536.4
+dyno_drive_extended_short,B: CAN + bulk Ethernet,3,0,0.6921288,True,6,1900.0,1402.0
+dyno_drive_extended_short,B: CAN + bulk Ethernet,3,1,0.7151152,True,6,1900.0,1402.0
+dyno_drive_extended_short,B: CAN + bulk Ethernet,3,2,0.753384,True,6,1900.0,1402.0
+dyno_drive_extended_short,B: CAN + bulk Ethernet,3,3,0.805792,True,6,1900.0,1402.0
+dyno_drive_extended_short,B: CAN + bulk Ethernet,3,4,0.748492,True,6,1900.0,1402.0
+dyno_drive_extended_short,B: CAN + bulk Ethernet,4,0,0.6748336,True,8,1900.0,1267.6
+dyno_drive_extended_short,B: CAN + bulk Ethernet,4,1,0.8713752,True,8,1900.0,1267.6
+dyno_drive_extended_short,B: CAN + bulk Ethernet,4,2,0.917284,True,8,1900.0,1267.6
+dyno_drive_extended_short,B: CAN + bulk Ethernet,4,3,0.9729384,True,8,1900.0,1267.6
+dyno_drive_extended_short,B: CAN + bulk Ethernet,4,4,0.8987536,True,8,1900.0,1267.6
+dyno_drive_extended_short,B: CAN + bulk Ethernet,5,0,0.828752,False,10,,
+dyno_drive_extended_short,B: CAN + bulk Ethernet,5,1,1.0655608,False,10,,
+dyno_drive_extended_short,B: CAN + bulk Ethernet,5,2,1.0839192,False,10,,
+dyno_drive_extended_short,B: CAN + bulk Ethernet,5,3,1.1342704,False,10,,
+dyno_drive_extended_short,B: CAN + bulk Ethernet,5,4,1.0552392,False,10,,
+dyno_drive_radio_infotainment,A: CAN only,1,0,0.160608,True,2,1900.0,1670.8
+dyno_drive_radio_infotainment,A: CAN only,1,1,0.1606416,True,2,1900.0,1670.8
+dyno_drive_radio_infotainment,A: CAN only,1,2,0.1607088,True,2,1900.0,1670.8
+dyno_drive_radio_infotainment,A: CAN only,1,3,0.160608,True,2,1900.0,1670.8
+dyno_drive_radio_infotainment,A: CAN only,1,4,0.1609104,True,2,1900.0,1670.8
+dyno_drive_radio_infotainment,A: CAN only,2,0,0.3212496,True,4,1900.0,1536.4
+dyno_drive_radio_infotainment,A: CAN only,2,1,0.3213168,True,4,1900.0,1536.4
+dyno_drive_radio_infotainment,A: CAN only,2,2,0.321384,True,4,1900.0,1536.4
+dyno_drive_radio_infotainment,A: CAN only,2,3,0.3213168,True,4,1900.0,1536.4
+dyno_drive_radio_infotainment,A: CAN only,2,4,0.3214848,True,4,1900.0,1536.4
+dyno_drive_radio_infotainment,A: CAN only,4,0,0.6428352,True,8,1900.0,1267.6
+dyno_drive_radio_infotainment,A: CAN only,4,1,0.6425664,True,8,1900.0,1267.6
+dyno_drive_radio_infotainment,A: CAN only,4,2,0.6426,True,8,1900.0,1267.6
+dyno_drive_radio_infotainment,A: CAN only,4,3,0.642768,True,8,1900.0,1267.6
+dyno_drive_radio_infotainment,A: CAN only,4,4,0.6429024,True,8,1900.0,1267.6
+dyno_drive_radio_infotainment,A: CAN only,6,0,0.9642528,True,12,1900.0,931.6
+dyno_drive_radio_infotainment,A: CAN only,6,1,0.9641184,True,12,1900.0,931.6
+dyno_drive_radio_infotainment,A: CAN only,6,2,0.9640848,True,12,1900.0,931.6
+dyno_drive_radio_infotainment,A: CAN only,6,3,0.9640176,True,12,1900.0,931.6
+dyno_drive_radio_infotainment,A: CAN only,6,4,0.964152,True,12,1900.0,931.6
+dyno_drive_radio_infotainment,A: CAN only,8,0,1.2856704,True,16,1900.0,662.8
+dyno_drive_radio_infotainment,A: CAN only,8,1,1.285536,True,16,1900.0,662.8
+dyno_drive_radio_infotainment,A: CAN only,8,2,1.2852672,True,16,1900.0,662.8
+dyno_drive_radio_infotainment,A: CAN only,8,3,1.2853008,True,16,1900.0,662.8
+dyno_drive_radio_infotainment,A: CAN only,8,4,1.2854352,True,16,1900.0,662.8
+dyno_drive_radio_infotainment,B: CAN + bulk Ethernet,1,0,0.4804744,True,2,1900.0,1670.8
+dyno_drive_radio_infotainment,B: CAN + bulk Ethernet,1,1,0.387816,True,2,1900.0,1670.8
+dyno_drive_radio_infotainment,B: CAN + bulk Ethernet,1,2,0.42328,True,2,1900.0,1670.8
+dyno_drive_radio_infotainment,B: CAN + bulk Ethernet,1,3,0.510452,True,2,1900.0,1670.8
+dyno_drive_radio_infotainment,B: CAN + bulk Ethernet,1,4,0.391068,True,2,1900.0,1670.8
+dyno_drive_radio_infotainment,B: CAN + bulk Ethernet,2,0,0.6390656,True,4,1900.0,1536.4
+dyno_drive_radio_infotainment,B: CAN + bulk Ethernet,2,1,0.5484912,True,4,1900.0,1536.4
+dyno_drive_radio_infotainment,B: CAN + bulk Ethernet,2,2,0.5913912,True,4,1900.0,1536.4
+dyno_drive_radio_infotainment,B: CAN + bulk Ethernet,2,3,0.6520672,True,4,1900.0,1536.4
+dyno_drive_radio_infotainment,B: CAN + bulk Ethernet,2,4,0.560072,True,4,1900.0,1536.4
+dyno_drive_radio_infotainment,B: CAN + bulk Ethernet,3,0,0.7989768,True,6,1900.0,1402.0
+dyno_drive_radio_infotainment,B: CAN + bulk Ethernet,3,1,0.7148464,True,6,1900.0,1402.0
+dyno_drive_radio_infotainment,B: CAN + bulk Ethernet,3,2,0.7526784,True,6,1900.0,1402.0
+dyno_drive_radio_infotainment,B: CAN + bulk Ethernet,3,3,0.8041456,True,6,1900.0,1402.0
+dyno_drive_radio_infotainment,B: CAN + bulk Ethernet,3,4,0.7483912,True,6,1900.0,1402.0
+dyno_drive_radio_infotainment,B: CAN + bulk Ethernet,4,0,0.8886976,True,8,1900.0,1267.6
+dyno_drive_radio_infotainment,B: CAN + bulk Ethernet,4,1,0.870972,True,8,1900.0,1267.6
+dyno_drive_radio_infotainment,B: CAN + bulk Ethernet,4,2,0.9165112,True,8,1900.0,1267.6
+dyno_drive_radio_infotainment,B: CAN + bulk Ethernet,4,3,0.97146,True,8,1900.0,1267.6
+dyno_drive_radio_infotainment,B: CAN + bulk Ethernet,4,4,0.897544,True,8,1900.0,1267.6
+dyno_drive_radio_infotainment,B: CAN + bulk Ethernet,5,0,1.0425488,False,10,,
+dyno_drive_radio_infotainment,B: CAN + bulk Ethernet,5,1,1.0651576,False,10,,
+dyno_drive_radio_infotainment,B: CAN + bulk Ethernet,5,2,1.0831464,False,10,,
+dyno_drive_radio_infotainment,B: CAN + bulk Ethernet,5,3,1.1326576,False,10,,
+dyno_drive_radio_infotainment,B: CAN + bulk Ethernet,5,4,1.0539624,False,10,,
+dyno_drive_winter,A: CAN only,1,0,0.1609776,True,2,1900.0,1670.8
+dyno_drive_winter,A: CAN only,1,1,0.1607424,True,2,1900.0,1670.8
+dyno_drive_winter,A: CAN only,1,2,0.1605408,True,2,1900.0,1670.8
+dyno_drive_winter,A: CAN only,1,3,0.1606752,True,2,1900.0,1670.8
+dyno_drive_winter,A: CAN only,1,4,0.1607088,True,2,1900.0,1670.8
+dyno_drive_winter,A: CAN only,2,0,0.3214848,True,4,1900.0,1536.4
+dyno_drive_winter,A: CAN only,2,1,0.3214176,True,4,1900.0,1536.4
+dyno_drive_winter,A: CAN only,2,2,0.3211824,True,4,1900.0,1536.4
+dyno_drive_winter,A: CAN only,2,3,0.3213168,True,4,1900.0,1536.4
+dyno_drive_winter,A: CAN only,2,4,0.3213168,True,4,1900.0,1536.4
+dyno_drive_winter,A: CAN only,4,0,0.642768,True,8,1900.0,1267.6
+dyno_drive_winter,A: CAN only,4,1,0.6428352,True,8,1900.0,1267.6
+dyno_drive_winter,A: CAN only,4,2,0.6424992,True,8,1900.0,1267.6
+dyno_drive_winter,A: CAN only,4,3,0.6427344,True,8,1900.0,1267.6
+dyno_drive_winter,A: CAN only,4,4,0.6426336,True,8,1900.0,1267.6
+dyno_drive_winter,A: CAN only,6,0,0.9644208,True,12,1900.0,931.6
+dyno_drive_winter,A: CAN only,6,1,0.964152,True,12,1900.0,931.6
+dyno_drive_winter,A: CAN only,6,2,0.9639504,True,12,1900.0,931.6
+dyno_drive_winter,A: CAN only,6,3,0.964152,True,12,1900.0,931.6
+dyno_drive_winter,A: CAN only,6,4,0.9642528,True,12,1900.0,931.6
+dyno_drive_winter,A: CAN only,8,0,1.28604,True,16,1900.0,662.8
+dyno_drive_winter,A: CAN only,8,1,1.2855696,True,16,1900.0,662.8
+dyno_drive_winter,A: CAN only,8,2,1.2854016,True,16,1900.0,662.8
+dyno_drive_winter,A: CAN only,8,3,1.2857376,True,16,1900.0,662.8
+dyno_drive_winter,A: CAN only,8,4,1.2855024,True,16,1900.0,662.8
+dyno_drive_winter,B: CAN + bulk Ethernet,1,0,0.480844,True,2,1900.0,1670.8
+dyno_drive_winter,B: CAN + bulk Ethernet,1,1,0.3879168,True,2,1900.0,1670.8
+dyno_drive_winter,B: CAN + bulk Ethernet,1,2,0.423112,True,2,1900.0,1670.8
+dyno_drive_winter,B: CAN + bulk Ethernet,1,3,0.5105192,True,2,1900.0,1670.8
+dyno_drive_winter,B: CAN + bulk Ethernet,1,4,0.3908664,True,2,1900.0,1670.8
+dyno_drive_winter,B: CAN + bulk Ethernet,2,0,0.6393008,True,4,1900.0,1536.4
+dyno_drive_winter,B: CAN + bulk Ethernet,2,1,0.548592,True,4,1900.0,1536.4
+dyno_drive_winter,B: CAN + bulk Ethernet,2,2,0.5911896,True,4,1900.0,1536.4
+dyno_drive_winter,B: CAN + bulk Ethernet,2,3,0.6520672,True,4,1900.0,1536.4
+dyno_drive_winter,B: CAN + bulk Ethernet,2,4,0.559904,True,4,1900.0,1536.4
+dyno_drive_winter,B: CAN + bulk Ethernet,3,0,0.7989096,True,6,1900.0,1402.0
+dyno_drive_winter,B: CAN + bulk Ethernet,3,1,0.7150816,True,6,1900.0,1402.0
+dyno_drive_winter,B: CAN + bulk Ethernet,3,2,0.752544,True,6,1900.0,1402.0
+dyno_drive_winter,B: CAN + bulk Ethernet,3,3,0.8041456,True,6,1900.0,1402.0
+dyno_drive_winter,B: CAN + bulk Ethernet,3,4,0.7480552,True,6,1900.0,1402.0
+dyno_drive_winter,B: CAN + bulk Ethernet,4,0,0.8886304,True,8,1900.0,1267.6
+dyno_drive_winter,B: CAN + bulk Ethernet,4,1,0.8712408,True,8,1900.0,1267.6
+dyno_drive_winter,B: CAN + bulk Ethernet,4,2,0.9164104,True,8,1900.0,1267.6
+dyno_drive_winter,B: CAN + bulk Ethernet,4,3,0.9714264,True,8,1900.0,1267.6
+dyno_drive_winter,B: CAN + bulk Ethernet,4,4,0.8972752,True,8,1900.0,1267.6
+dyno_drive_winter,B: CAN + bulk Ethernet,5,0,1.0426832,False,10,,
+dyno_drive_winter,B: CAN + bulk Ethernet,5,1,1.0652248,False,10,,
+dyno_drive_winter,B: CAN + bulk Ethernet,5,2,1.0830456,False,10,,
+dyno_drive_winter,B: CAN + bulk Ethernet,5,3,1.1328256,False,10,,
+dyno_drive_winter,B: CAN + bulk Ethernet,5,4,1.053996,False,10,,
+dyno_exercise_all_bits,A: CAN only,1,0,0.0536256,True,2,1900.0,1670.8
+dyno_exercise_all_bits,A: CAN only,1,1,0.14112,True,2,1900.0,1670.8
+dyno_exercise_all_bits,A: CAN only,1,2,0.003024,True,2,1900.0,1670.8
+dyno_exercise_all_bits,A: CAN only,1,3,0.0534912,True,2,1900.0,1670.8
+dyno_exercise_all_bits,A: CAN only,1,4,0.1027152,True,2,1900.0,1670.8
+dyno_exercise_all_bits,A: CAN only,2,0,0.107352,True,4,1900.0,1536.4
+dyno_exercise_all_bits,A: CAN only,2,1,0.2437008,True,4,1900.0,1536.4
+dyno_exercise_all_bits,A: CAN only,2,2,0.056616,True,4,1900.0,1536.4
+dyno_exercise_all_bits,A: CAN only,2,3,0.0534912,True,4,1900.0,1536.4
+dyno_exercise_all_bits,A: CAN only,2,4,0.2440032,True,4,1900.0,1536.4
+dyno_exercise_all_bits,A: CAN only,4,0,0.1762992,True,8,1900.0,1267.6
+dyno_exercise_all_bits,A: CAN only,4,1,0.3942288,True,8,1900.0,1267.6
+dyno_exercise_all_bits,A: CAN only,4,2,0.1638,True,8,1900.0,1267.6
+dyno_exercise_all_bits,A: CAN only,4,3,0.2092608,True,8,1900.0,1267.6
+dyno_exercise_all_bits,A: CAN only,4,4,0.4003104,True,8,1900.0,1267.6
+dyno_exercise_all_bits,A: CAN only,6,0,0.3713136,True,12,1900.0,931.6
+dyno_exercise_all_bits,A: CAN only,6,1,0.4642848,True,12,1900.0,931.6
+dyno_exercise_all_bits,A: CAN only,6,2,0.269472,True,12,1900.0,931.6
+dyno_exercise_all_bits,A: CAN only,6,3,0.2823072,True,12,1900.0,931.6
+dyno_exercise_all_bits,A: CAN only,6,4,0.4835376,True,12,1900.0,931.6
+dyno_exercise_all_bits,A: CAN only,8,0,0.4582368,True,16,1900.0,662.8
+dyno_exercise_all_bits,A: CAN only,8,1,0.534576,True,16,1900.0,662.8
+dyno_exercise_all_bits,A: CAN only,8,2,0.2896656,True,16,1900.0,662.8
+dyno_exercise_all_bits,A: CAN only,8,3,0.4974816,True,16,1900.0,662.8
+dyno_exercise_all_bits,A: CAN only,8,4,0.5725776,True,16,1900.0,662.8
+dyno_exercise_all_bits,B: CAN + bulk Ethernet,1,0,0.373492,True,2,1900.0,1670.8
+dyno_exercise_all_bits,B: CAN + bulk Ethernet,1,1,0.3682944,True,2,1900.0,1670.8
+dyno_exercise_all_bits,B: CAN + bulk Ethernet,1,2,0.2655952,True,2,1900.0,1670.8
+dyno_exercise_all_bits,B: CAN + bulk Ethernet,1,3,0.4033352,True,2,1900.0,1670.8
+dyno_exercise_all_bits,B: CAN + bulk Ethernet,1,4,0.3328728,True,2,1900.0,1670.8
+dyno_exercise_all_bits,B: CAN + bulk Ethernet,2,0,0.425168,True,4,1900.0,1536.4
+dyno_exercise_all_bits,B: CAN + bulk Ethernet,2,1,0.4708752,True,4,1900.0,1536.4
+dyno_exercise_all_bits,B: CAN + bulk Ethernet,2,2,0.3266232,True,4,1900.0,1536.4
+dyno_exercise_all_bits,B: CAN + bulk Ethernet,2,3,0.3842416,True,4,1900.0,1536.4
+dyno_exercise_all_bits,B: CAN + bulk Ethernet,2,4,0.4825904,True,4,1900.0,1536.4
+dyno_exercise_all_bits,B: CAN + bulk Ethernet,3,0,0.4395912,True,6,1900.0,1402.0
+dyno_exercise_all_bits,B: CAN + bulk Ethernet,3,1,0.5246032,True,6,1900.0,1402.0
+dyno_exercise_all_bits,B: CAN + bulk Ethernet,3,2,0.3808944,True,6,1900.0,1402.0
+dyno_exercise_all_bits,B: CAN + bulk Ethernet,3,3,0.4288672,True,6,1900.0,1402.0
+dyno_exercise_all_bits,B: CAN + bulk Ethernet,3,4,0.6127816,True,6,1900.0,1402.0
+dyno_exercise_all_bits,B: CAN + bulk Ethernet,4,0,0.4221616,True,8,1900.0,1267.6
+dyno_exercise_all_bits,B: CAN + bulk Ethernet,4,1,0.6226344,True,8,1900.0,1267.6
+dyno_exercise_all_bits,B: CAN + bulk Ethernet,4,2,0.4377112,True,8,1900.0,1267.6
+dyno_exercise_all_bits,B: CAN + bulk Ethernet,4,3,0.5379528,True,8,1900.0,1267.6
+dyno_exercise_all_bits,B: CAN + bulk Ethernet,4,4,0.654952,True,8,1900.0,1267.6
+dyno_exercise_all_bits,B: CAN + bulk Ethernet,5,0,0.4689968,False,10,,
+dyno_exercise_all_bits,B: CAN + bulk Ethernet,5,1,0.7098376,False,10,,
+dyno_exercise_all_bits,B: CAN + bulk Ethernet,5,2,0.4956168,False,10,,
+dyno_exercise_all_bits,B: CAN + bulk Ethernet,5,3,0.5921344,False,10,,
+dyno_exercise_all_bits,B: CAN + bulk Ethernet,5,4,0.6802632,False,10,,
+dyno_idle_radio_infotainment,A: CAN only,1,0,0.1607424,True,2,1900.0,1670.8
+dyno_idle_radio_infotainment,A: CAN only,1,1,0.160776,True,2,1900.0,1670.8
+dyno_idle_radio_infotainment,A: CAN only,1,2,0.1607088,True,2,1900.0,1670.8
+dyno_idle_radio_infotainment,A: CAN only,1,3,0.1607088,True,2,1900.0,1670.8
+dyno_idle_radio_infotainment,A: CAN only,1,4,0.1606752,True,2,1900.0,1670.8
+dyno_idle_radio_infotainment,A: CAN only,2,0,0.3214176,True,4,1900.0,1536.4
+dyno_idle_radio_infotainment,A: CAN only,2,1,0.3216192,True,4,1900.0,1536.4
+dyno_idle_radio_infotainment,A: CAN only,2,2,0.3215856,True,4,1900.0,1536.4
+dyno_idle_radio_infotainment,A: CAN only,2,3,0.3215184,True,4,1900.0,1536.4
+dyno_idle_radio_infotainment,A: CAN only,2,4,0.3214848,True,4,1900.0,1536.4
+dyno_idle_radio_infotainment,A: CAN only,4,0,0.627816,True,8,1900.0,1267.6
+dyno_idle_radio_infotainment,A: CAN only,4,1,0.6430368,True,8,1900.0,1267.6
+dyno_idle_radio_infotainment,A: CAN only,4,2,0.642936,True,8,1900.0,1267.6
+dyno_idle_radio_infotainment,A: CAN only,4,3,0.6429024,True,8,1900.0,1267.6
+dyno_idle_radio_infotainment,A: CAN only,4,4,0.6414912,True,8,1900.0,1267.6
+dyno_idle_radio_infotainment,A: CAN only,6,0,0.9491664,True,12,1900.0,931.6
+dyno_idle_radio_infotainment,A: CAN only,6,1,0.9646896,True,12,1900.0,931.6
+dyno_idle_radio_infotainment,A: CAN only,6,2,0.9619344,True,12,1900.0,931.6
+dyno_idle_radio_infotainment,A: CAN only,6,3,0.9643872,True,12,1900.0,931.6
+dyno_idle_radio_infotainment,A: CAN only,6,4,0.9627744,True,12,1900.0,931.6
+dyno_idle_radio_infotainment,A: CAN only,8,0,1.2703488,True,16,1900.0,662.8
+dyno_idle_radio_infotainment,A: CAN only,8,1,1.2861744,True,16,1900.0,662.8
+dyno_idle_radio_infotainment,A: CAN only,8,2,1.2834192,True,16,1900.0,662.8
+dyno_idle_radio_infotainment,A: CAN only,8,3,1.285704,True,16,1900.0,662.8
+dyno_idle_radio_infotainment,A: CAN only,8,4,1.2841248,True,16,1900.0,662.8
+dyno_idle_radio_infotainment,B: CAN + bulk Ethernet,1,0,0.4806088,True,2,1900.0,1670.8
+dyno_idle_radio_infotainment,B: CAN + bulk Ethernet,1,1,0.3879504,True,2,1900.0,1670.8
+dyno_idle_radio_infotainment,B: CAN + bulk Ethernet,1,2,0.42328,True,2,1900.0,1670.8
+dyno_idle_radio_infotainment,B: CAN + bulk Ethernet,1,3,0.5105528,True,2,1900.0,1670.8
+dyno_idle_radio_infotainment,B: CAN + bulk Ethernet,1,4,0.3908328,True,2,1900.0,1670.8
+dyno_idle_radio_infotainment,B: CAN + bulk Ethernet,2,0,0.6392336,True,4,1900.0,1536.4
+dyno_idle_radio_infotainment,B: CAN + bulk Ethernet,2,1,0.5487936,True,4,1900.0,1536.4
+dyno_idle_radio_infotainment,B: CAN + bulk Ethernet,2,2,0.5915928,True,4,1900.0,1536.4
+dyno_idle_radio_infotainment,B: CAN + bulk Ethernet,2,3,0.6522688,True,4,1900.0,1536.4
+dyno_idle_radio_infotainment,B: CAN + bulk Ethernet,2,4,0.560072,True,4,1900.0,1536.4
+dyno_idle_radio_infotainment,B: CAN + bulk Ethernet,3,0,0.7989768,True,6,1900.0,1402.0
+dyno_idle_radio_infotainment,B: CAN + bulk Ethernet,3,1,0.7152832,True,6,1900.0,1402.0
+dyno_idle_radio_infotainment,B: CAN + bulk Ethernet,3,2,0.7527792,True,6,1900.0,1402.0
+dyno_idle_radio_infotainment,B: CAN + bulk Ethernet,3,3,0.80428,True,6,1900.0,1402.0
+dyno_idle_radio_infotainment,B: CAN + bulk Ethernet,3,4,0.7482232,True,6,1900.0,1402.0
+dyno_idle_radio_infotainment,B: CAN + bulk Ethernet,4,0,0.8736784,True,8,1900.0,1267.6
+dyno_idle_radio_infotainment,B: CAN + bulk Ethernet,4,1,0.8714424,True,8,1900.0,1267.6
+dyno_idle_radio_infotainment,B: CAN + bulk Ethernet,4,2,0.9168472,True,8,1900.0,1267.6
+dyno_idle_radio_infotainment,B: CAN + bulk Ethernet,4,3,0.9715944,True,8,1900.0,1267.6
+dyno_idle_radio_infotainment,B: CAN + bulk Ethernet,4,4,0.8961328,True,8,1900.0,1267.6
+dyno_idle_radio_infotainment,B: CAN + bulk Ethernet,5,0,1.0274624,False,10,,
+dyno_idle_radio_infotainment,B: CAN + bulk Ethernet,5,1,1.0657288,False,10,,
+dyno_idle_radio_infotainment,B: CAN + bulk Ethernet,5,2,1.0810632,False,10,,
+dyno_idle_radio_infotainment,B: CAN + bulk Ethernet,5,3,1.1329936,False,10,,
+dyno_idle_radio_infotainment,B: CAN + bulk Ethernet,5,4,1.0523832,False,10,,
+dyno_reverse,A: CAN only,1,0,0.1609776,True,2,1900.0,1670.8
+dyno_reverse,A: CAN only,1,1,0.160776,True,2,1900.0,1670.8
+dyno_reverse,A: CAN only,1,2,0.160608,True,2,1900.0,1670.8
+dyno_reverse,A: CAN only,1,3,0.1607088,True,2,1900.0,1670.8
+dyno_reverse,A: CAN only,1,4,0.1608096,True,2,1900.0,1670.8
+dyno_reverse,A: CAN only,2,0,0.3218208,True,4,1900.0,1536.4
+dyno_reverse,A: CAN only,2,1,0.321552,True,4,1900.0,1536.4
+dyno_reverse,A: CAN only,2,2,0.3215184,True,4,1900.0,1536.4
+dyno_reverse,A: CAN only,2,3,0.321552,True,4,1900.0,1536.4
+dyno_reverse,A: CAN only,2,4,0.321552,True,4,1900.0,1536.4
+dyno_reverse,A: CAN only,4,0,0.6433056,True,8,1900.0,1267.6
+dyno_reverse,A: CAN only,4,1,0.6430032,True,8,1900.0,1267.6
+dyno_reverse,A: CAN only,4,2,0.6430368,True,8,1900.0,1267.6
+dyno_reverse,A: CAN only,4,3,0.6429696,True,8,1900.0,1267.6
+dyno_reverse,A: CAN only,4,4,0.6431376,True,8,1900.0,1267.6
+dyno_reverse,A: CAN only,6,0,0.964992,True,12,1900.0,931.6
+dyno_reverse,A: CAN only,6,1,0.9645552,True,12,1900.0,931.6
+dyno_reverse,A: CAN only,6,2,0.9647232,True,12,1900.0,931.6
+dyno_reverse,A: CAN only,6,3,0.9642864,True,12,1900.0,931.6
+dyno_reverse,A: CAN only,6,4,0.9649248,True,12,1900.0,931.6
+dyno_reverse,A: CAN only,8,0,1.2866448,True,16,1900.0,662.8
+dyno_reverse,A: CAN only,8,1,1.2859392,True,16,1900.0,662.8
+dyno_reverse,A: CAN only,8,2,1.286544,True,16,1900.0,662.8
+dyno_reverse,A: CAN only,8,3,1.2857712,True,16,1900.0,662.8
+dyno_reverse,A: CAN only,8,4,1.2863088,True,16,1900.0,662.8
+dyno_reverse,B: CAN + bulk Ethernet,1,0,0.480844,True,2,1900.0,1670.8
+dyno_reverse,B: CAN + bulk Ethernet,1,1,0.3879504,True,2,1900.0,1670.8
+dyno_reverse,B: CAN + bulk Ethernet,1,2,0.4231792,True,2,1900.0,1670.8
+dyno_reverse,B: CAN + bulk Ethernet,1,3,0.5105528,True,2,1900.0,1670.8
+dyno_reverse,B: CAN + bulk Ethernet,1,4,0.3909672,True,2,1900.0,1670.8
+dyno_reverse,B: CAN + bulk Ethernet,2,0,0.6396368,True,4,1900.0,1536.4
+dyno_reverse,B: CAN + bulk Ethernet,2,1,0.5487264,True,4,1900.0,1536.4
+dyno_reverse,B: CAN + bulk Ethernet,2,2,0.5915256,True,4,1900.0,1536.4
+dyno_reverse,B: CAN + bulk Ethernet,2,3,0.6523024,True,4,1900.0,1536.4
+dyno_reverse,B: CAN + bulk Ethernet,2,4,0.5601392,True,4,1900.0,1536.4
+dyno_reverse,B: CAN + bulk Ethernet,3,0,0.7994136,True,6,1900.0,1402.0
+dyno_reverse,B: CAN + bulk Ethernet,3,1,0.715216,True,6,1900.0,1402.0
+dyno_reverse,B: CAN + bulk Ethernet,3,2,0.7529136,True,6,1900.0,1402.0
+dyno_reverse,B: CAN + bulk Ethernet,3,3,0.8044144,True,6,1900.0,1402.0
+dyno_reverse,B: CAN + bulk Ethernet,3,4,0.7485256,True,6,1900.0,1402.0
+dyno_reverse,B: CAN + bulk Ethernet,4,0,0.889168,True,8,1900.0,1267.6
+dyno_reverse,B: CAN + bulk Ethernet,4,1,0.8714088,True,8,1900.0,1267.6
+dyno_reverse,B: CAN + bulk Ethernet,4,2,0.916948,True,8,1900.0,1267.6
+dyno_reverse,B: CAN + bulk Ethernet,4,3,0.9716616,True,8,1900.0,1267.6
+dyno_reverse,B: CAN + bulk Ethernet,4,4,0.8977792,True,8,1900.0,1267.6
+dyno_reverse,B: CAN + bulk Ethernet,5,0,1.0432208,False,10,,
+dyno_reverse,B: CAN + bulk Ethernet,5,1,1.06546,False,10,,
+dyno_reverse,B: CAN + bulk Ethernet,5,2,1.0837512,False,10,,
+dyno_reverse,B: CAN + bulk Ethernet,5,3,1.1329936,False,10,,
+dyno_reverse,B: CAN + bulk Ethernet,5,4,1.0546008,False,10,,
+highway_street_driving_diagnostics,A: CAN only,1,0,0.1608096,True,2,1900.0,1670.8
+highway_street_driving_diagnostics,A: CAN only,1,1,0.1607424,True,2,1900.0,1670.8
+highway_street_driving_diagnostics,A: CAN only,1,2,0.1608432,True,2,1900.0,1670.8
+highway_street_driving_diagnostics,A: CAN only,1,3,0.1608768,True,2,1900.0,1670.8
+highway_street_driving_diagnostics,A: CAN only,1,4,0.1606752,True,2,1900.0,1670.8
+highway_street_driving_diagnostics,A: CAN only,2,0,0.3215184,True,4,1900.0,1536.4
+highway_street_driving_diagnostics,A: CAN only,2,1,0.3214848,True,4,1900.0,1536.4
+highway_street_driving_diagnostics,A: CAN only,2,2,0.321552,True,4,1900.0,1536.4
+highway_street_driving_diagnostics,A: CAN only,2,3,0.3218208,True,4,1900.0,1536.4
+highway_street_driving_diagnostics,A: CAN only,2,4,0.3214848,True,4,1900.0,1536.4
+highway_street_driving_diagnostics,A: CAN only,4,0,0.6432384,True,8,1900.0,1267.6
+highway_street_driving_diagnostics,A: CAN only,4,1,0.6430704,True,8,1900.0,1267.6
+highway_street_driving_diagnostics,A: CAN only,4,2,0.6432048,True,8,1900.0,1267.6
+highway_street_driving_diagnostics,A: CAN only,4,3,0.6433728,True,8,1900.0,1267.6
+highway_street_driving_diagnostics,A: CAN only,4,4,0.6431376,True,8,1900.0,1267.6
+highway_street_driving_diagnostics,A: CAN only,6,0,0.9651264,True,12,1900.0,931.6
+highway_street_driving_diagnostics,A: CAN only,6,1,0.9647568,True,12,1900.0,931.6
+highway_street_driving_diagnostics,A: CAN only,6,2,0.965328,True,12,1900.0,931.6
+highway_street_driving_diagnostics,A: CAN only,6,3,0.9647568,True,12,1900.0,931.6
+highway_street_driving_diagnostics,A: CAN only,6,4,0.9646896,True,12,1900.0,931.6
+highway_street_driving_diagnostics,A: CAN only,8,0,1.2870816,True,16,1900.0,662.8
+highway_street_driving_diagnostics,A: CAN only,8,1,1.286208,True,16,1900.0,662.8
+highway_street_driving_diagnostics,A: CAN only,8,2,1.28688,True,16,1900.0,662.8
+highway_street_driving_diagnostics,A: CAN only,8,3,1.2862752,True,16,1900.0,662.8
+highway_street_driving_diagnostics,A: CAN only,8,4,1.2862752,True,16,1900.0,662.8
+highway_street_driving_diagnostics,B: CAN + bulk Ethernet,1,0,0.480676,True,2,1900.0,1670.8
+highway_street_driving_diagnostics,B: CAN + bulk Ethernet,1,1,0.3879168,True,2,1900.0,1670.8
+highway_street_driving_diagnostics,B: CAN + bulk Ethernet,1,2,0.4234144,True,2,1900.0,1670.8
+highway_street_driving_diagnostics,B: CAN + bulk Ethernet,1,3,0.5107208,True,2,1900.0,1670.8
+highway_street_driving_diagnostics,B: CAN + bulk Ethernet,1,4,0.3908328,True,2,1900.0,1670.8
+highway_street_driving_diagnostics,B: CAN + bulk Ethernet,2,0,0.6393344,True,4,1900.0,1536.4
+highway_street_driving_diagnostics,B: CAN + bulk Ethernet,2,1,0.5486592,True,4,1900.0,1536.4
+highway_street_driving_diagnostics,B: CAN + bulk Ethernet,2,2,0.5915592,True,4,1900.0,1536.4
+highway_street_driving_diagnostics,B: CAN + bulk Ethernet,2,3,0.6525712,True,4,1900.0,1536.4
+highway_street_driving_diagnostics,B: CAN + bulk Ethernet,2,4,0.560072,True,4,1900.0,1536.4
+highway_street_driving_diagnostics,B: CAN + bulk Ethernet,3,0,0.79938,True,6,1900.0,1402.0
+highway_street_driving_diagnostics,B: CAN + bulk Ethernet,3,1,0.7153168,True,6,1900.0,1402.0
+highway_street_driving_diagnostics,B: CAN + bulk Ethernet,3,2,0.7529472,True,6,1900.0,1402.0
+highway_street_driving_diagnostics,B: CAN + bulk Ethernet,3,3,0.8047504,True,6,1900.0,1402.0
+highway_street_driving_diagnostics,B: CAN + bulk Ethernet,3,4,0.748324,True,6,1900.0,1402.0
+highway_street_driving_diagnostics,B: CAN + bulk Ethernet,4,0,0.8891008,True,8,1900.0,1267.6
+highway_street_driving_diagnostics,B: CAN + bulk Ethernet,4,1,0.871476,True,8,1900.0,1267.6
+highway_street_driving_diagnostics,B: CAN + bulk Ethernet,4,2,0.917116,True,8,1900.0,1267.6
+highway_street_driving_diagnostics,B: CAN + bulk Ethernet,4,3,0.9720648,True,8,1900.0,1267.6
+highway_street_driving_diagnostics,B: CAN + bulk Ethernet,4,4,0.8977792,True,8,1900.0,1267.6
+highway_street_driving_diagnostics,B: CAN + bulk Ethernet,5,0,1.0430864,False,10,,
+highway_street_driving_diagnostics,B: CAN + bulk Ethernet,5,1,1.0656952,False,10,,
+highway_street_driving_diagnostics,B: CAN + bulk Ethernet,5,2,1.0839528,False,10,,
+highway_street_driving_diagnostics,B: CAN + bulk Ethernet,5,3,1.1334304,False,10,,
+highway_street_driving_diagnostics,B: CAN + bulk Ethernet,5,4,1.054332,False,10,,
+highway_street_driving_long,A: CAN only,1,0,0.1609104,True,2,1900.0,1670.8
+highway_street_driving_long,A: CAN only,1,1,0.1607088,True,2,1900.0,1670.8
+highway_street_driving_long,A: CAN only,1,2,0.1607088,True,2,1900.0,1670.8
+highway_street_driving_long,A: CAN only,1,3,0.1608432,True,2,1900.0,1670.8
+highway_street_driving_long,A: CAN only,1,4,0.1605072,True,2,1900.0,1670.8
+highway_street_driving_long,A: CAN only,2,0,0.3216192,True,4,1900.0,1536.4
+highway_street_driving_long,A: CAN only,2,1,0.3212496,True,4,1900.0,1536.4
+highway_street_driving_long,A: CAN only,2,2,0.3217536,True,4,1900.0,1536.4
+highway_street_driving_long,A: CAN only,2,3,0.3215184,True,4,1900.0,1536.4
+highway_street_driving_long,A: CAN only,2,4,0.3212496,True,4,1900.0,1536.4
+highway_street_driving_long,A: CAN only,4,0,0.6432048,True,8,1900.0,1267.6
+highway_street_driving_long,A: CAN only,4,1,0.6425328,True,8,1900.0,1267.6
+highway_street_driving_long,A: CAN only,4,2,0.6433056,True,8,1900.0,1267.6
+highway_street_driving_long,A: CAN only,4,3,0.6430032,True,8,1900.0,1267.6
+highway_street_driving_long,A: CAN only,4,4,0.642768,True,8,1900.0,1267.6
+highway_street_driving_long,A: CAN only,6,0,0.9642864,True,12,1900.0,931.6
+highway_street_driving_long,A: CAN only,6,1,0.9638832,True,12,1900.0,931.6
+highway_street_driving_long,A: CAN only,6,2,0.9647568,True,12,1900.0,931.6
+highway_street_driving_long,A: CAN only,6,3,0.9643872,True,12,1900.0,931.6
+highway_street_driving_long,A: CAN only,6,4,0.9644208,True,12,1900.0,931.6
+highway_street_driving_long,A: CAN only,8,0,1.285872,True,16,1900.0,662.8
+highway_street_driving_long,A: CAN only,8,1,1.2853008,True,16,1900.0,662.8
+highway_street_driving_long,A: CAN only,8,2,1.2863088,True,16,1900.0,662.8
+highway_street_driving_long,A: CAN only,8,3,1.285872,True,16,1900.0,662.8
+highway_street_driving_long,A: CAN only,8,4,1.285704,True,16,1900.0,662.8
+highway_street_driving_long,B: CAN + bulk Ethernet,1,0,0.4807768,True,2,1900.0,1670.8
+highway_street_driving_long,B: CAN + bulk Ethernet,1,1,0.3878832,True,2,1900.0,1670.8
+highway_street_driving_long,B: CAN + bulk Ethernet,1,2,0.42328,True,2,1900.0,1670.8
+highway_street_driving_long,B: CAN + bulk Ethernet,1,3,0.5106872,True,2,1900.0,1670.8
+highway_street_driving_long,B: CAN + bulk Ethernet,1,4,0.3906648,True,2,1900.0,1670.8
+highway_street_driving_long,B: CAN + bulk Ethernet,2,0,0.6394352,True,4,1900.0,1536.4
+highway_street_driving_long,B: CAN + bulk Ethernet,2,1,0.548424,True,4,1900.0,1536.4
+highway_street_driving_long,B: CAN + bulk Ethernet,2,2,0.5917608,True,4,1900.0,1536.4
+highway_street_driving_long,B: CAN + bulk Ethernet,2,3,0.6522688,True,4,1900.0,1536.4
+highway_street_driving_long,B: CAN + bulk Ethernet,2,4,0.5598368,True,4,1900.0,1536.4
+highway_street_driving_long,B: CAN + bulk Ethernet,3,0,0.7993128,True,6,1900.0,1402.0
+highway_street_driving_long,B: CAN + bulk Ethernet,3,1,0.71488,True,6,1900.0,1402.0
+highway_street_driving_long,B: CAN + bulk Ethernet,3,2,0.7531152,True,6,1900.0,1402.0
+highway_street_driving_long,B: CAN + bulk Ethernet,3,3,0.804448,True,6,1900.0,1402.0
+highway_street_driving_long,B: CAN + bulk Ethernet,3,4,0.7479208,True,6,1900.0,1402.0
+highway_street_driving_long,B: CAN + bulk Ethernet,4,0,0.8890672,True,8,1900.0,1267.6
+highway_street_driving_long,B: CAN + bulk Ethernet,4,1,0.8709384,True,8,1900.0,1267.6
+highway_street_driving_long,B: CAN + bulk Ethernet,4,2,0.9172168,True,8,1900.0,1267.6
+highway_street_driving_long,B: CAN + bulk Ethernet,4,3,0.9716952,True,8,1900.0,1267.6
+highway_street_driving_long,B: CAN + bulk Ethernet,4,4,0.8974096,True,8,1900.0,1267.6
+highway_street_driving_long,B: CAN + bulk Ethernet,5,0,1.0428176,False,10,,
+highway_street_driving_long,B: CAN + bulk Ethernet,5,1,1.0648888,False,10,,
+highway_street_driving_long,B: CAN + bulk Ethernet,5,2,1.0837848,False,10,,
+highway_street_driving_long,B: CAN + bulk Ethernet,5,3,1.1329264,False,10,,
+highway_street_driving_long,B: CAN + bulk Ethernet,5,4,1.0540296,False,10,,

@@ -1,0 +1,59 @@
+Using TinyML model results\tinyml_model.joblib
+
+Safety governor for the mixed-criticality scenario:
+  critical frames per TO: {1: 2, 2: 2}
+  non-critical budget between critical TOs: 1469 µs
+  guaranteed critical latency bound: 1900 µs (deadline 2000 µs)
+
+        uniform load 20% done
+        uniform load 30% done
+        uniform load 50% done
+        uniform load 70% done
+        uniform load 90% done
+  heterogeneous load 20% done
+  heterogeneous load 30% done
+  heterogeneous load 50% done
+  heterogeneous load 70% done
+  heterogeneous load 90% done
+         bursty load 20% done
+         bursty load 30% done
+         bursty load 50% done
+         bursty load 70% done
+         bursty load 90% done
+          mixed load 20% done
+          mixed load 30% done
+          mixed load 50% done
+          mixed load 70% done
+          mixed load 90% done
+        dynamic load 20% done
+        dynamic load 30% done
+        dynamic load 50% done
+        dynamic load 70% done
+        dynamic load 90% done
+
+Adaptive (tinyml) vs conventional PLCA, change in % (negative = better):
+     scenario  load  mean_latency_%  p99_latency_%  jitter_%  throughput_%
+      uniform   0.7            -0.2           -7.7      -4.4           0.0
+      uniform   0.9            -4.5          -12.1     -10.2          -0.0
+heterogeneous   0.7            -2.3          -18.2      26.6           0.0
+heterogeneous   0.9           -20.3          -41.0      49.7           0.0
+       bursty   0.7            -3.9           -2.0     -12.3           0.1
+       bursty   0.9            -7.3           -3.9     -14.3           0.1
+        mixed   0.7           -62.1          -40.6     -14.2           0.1
+        mixed   0.9           -69.9           -6.7     -20.4           0.8
+      dynamic   0.7            -3.2          -16.2     -10.1           0.0
+      dynamic   0.9            -3.8          -18.1      -9.0           0.2
+
+Mixed criticality - critical deadline misses (%):
+load           0.2   0.3    0.5    0.7    0.9
+policy                                       
+conventional  0.38  2.35  18.52  39.32  77.66
+governor      0.00  0.00   0.00   0.00   0.00
+reactive      0.00  0.00   0.00   0.00   0.00
+tinyml        0.00  0.00   0.00   0.00   0.00
+
+Done in 738 s. Results saved in 'results/'.
+
+real	12m28.189s
+user	0m0.015s
+sys	0m0.093s

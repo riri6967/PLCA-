@@ -1,0 +1,32 @@
+Collecting training windows...
+  collected uniform
+  collected heterogeneous
+  collected bursty
+  collected mixed
+  collected dynamic
+Collecting test windows...
+  collected uniform
+  collected heterogeneous
+  collected bursty
+  collected mixed
+  collected dynamic
+  33056 training windows, 16590 test windows
+  label share (train): {'low': np.int64(13366), 'medium': np.int64(8268), 'high': np.int64(3346), 'congested': np.int64(8076)}
+
+Prediction of the network state over the next 20 ms (unseen test runs):
+     scenario  windows  tinyml_accuracy  tinyml_macro_f1  persistence_accuracy  persistence_macro_f1
+          all    16590            0.624            0.583                 0.607                 0.552
+      uniform     3272            0.655            0.641                 0.611                 0.599
+heterogeneous     3326            0.645            0.624                 0.617                 0.599
+       bursty     3299            0.572            0.405                 0.555                 0.373
+        mixed     3285            0.588            0.478                 0.623                 0.474
+      dynamic     3408            0.661            0.449                 0.629                 0.417
+
+Model: decision tree, depth 4, 31 nodes (at most 4 comparisons per prediction).
+C code: results\plca_state_model.h
+
+Done in 130 s. Results saved in 'results/'.
+
+real	2m17.116s
+user	0m0.046s
+sys	0m0.046s

@@ -2,7 +2,6 @@ venv/
 .venv/
 __pycache__/
 *.pyc
-results/
 data/
-dataset/
-road_files.txt
+# Unzip road.zip here; road.zip itself is in Git LFS
+dataset/road/

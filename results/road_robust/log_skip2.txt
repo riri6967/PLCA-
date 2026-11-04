@@ -1,0 +1,50 @@
+dyno_drive_winter: 2392 frames/s, 106 IDs, critical ['0xa7', '0xd0']
+dyno_reverse: 2392 frames/s, 106 IDs, critical ['0xa7', '0xd0']
+dyno_exercise_all_bits: 867 frames/s, 106 IDs, critical ['0xa7', '0xd0']
+dyno_drive_benign_anomaly: 1327 frames/s, 106 IDs, critical ['0xa7', '0xd0']
+dyno_drive_extended_long: 1953 frames/s, 106 IDs, critical ['0xa7', '0xd0']
+dyno_drive_extended_short: 2287 frames/s, 106 IDs, critical ['0xa7', '0xd0']
+dyno_drive_radio_infotainment: 2391 frames/s, 106 IDs, critical ['0xa7', '0xd0']
+dyno_drive_basic_long: 2391 frames/s, 106 IDs, critical ['0xa7', '0xd0']
+dyno_idle_radio_infotainment: 2385 frames/s, 106 IDs, critical ['0xa7', '0xd0']
+dyno_drive_basic_short: 2392 frames/s, 106 IDs, critical ['0xa7', '0xd0']
+highway_street_driving_diagnostics: 2393 frames/s, 106 IDs, critical ['0xa7', '0xd0']
+highway_street_driving_long: 2389 frames/s, 106 IDs, critical ['0xa7', '0xd0']
+(none not found: run run_tinyml.py first to include the TinyML policy)
+
+            experiment  copies       policy  runs  offered_load  latency_mean_us  latency_p99_us  critical_latency_worst_us  critical_deadline_miss_rate  critical_miss_worst  loss_rate
+           A: CAN only       1 conventional    36        0.1443         156.9107        341.6726                   350.7679                       0.0000               0.0000     0.0000
+           A: CAN only       1     governor    36        0.1443         156.9107        341.6726                   350.7679                       0.0000               0.0000     0.0000
+           A: CAN only       1     reactive    36        0.1443         156.9107        341.6726                   350.7679                       0.0000               0.0000     0.0000
+           A: CAN only       4 conventional    36        0.5662         242.3572        767.4894                   605.1395                       0.0000               0.0000     0.0000
+           A: CAN only       4     governor    36        0.5662         242.3572        767.4894                   605.1395                       0.0000               0.0000     0.0000
+           A: CAN only       4     reactive    36        0.5662         242.3572        767.4894                   605.1395                       0.0000               0.0000     0.0000
+           A: CAN only       8 conventional    36        1.1359       25332.9778      31460.8712                  1137.0265                       0.0000               0.0000     0.1577
+           A: CAN only       8     governor    36        1.1359       13912.7348      77281.0058                   920.9103                       0.0000               0.0000     0.1683
+           A: CAN only       8     reactive    36        1.1359       13912.7348      77281.0058                   920.9103                       0.0000               0.0000     0.1683
+B: CAN + bulk Ethernet       1 conventional    36        0.4142        2870.5475      36040.7209                  2864.9048                       0.0096               0.0225     0.0000
+B: CAN + bulk Ethernet       1     governor    36        0.4142        2893.6944      36864.5671                  1705.5830                       0.0000               0.0000     0.0000
+B: CAN + bulk Ethernet       1     reactive    36        0.4142        2873.6755      37051.8037                  1735.8613                       0.0000               0.0000     0.0000
+B: CAN + bulk Ethernet       2 conventional    36        0.5621        2627.2492      36507.1281                  2931.4614                       0.0091               0.0200     0.0002
+B: CAN + bulk Ethernet       2     governor    36        0.5621        3243.2144      42227.8999                  1636.4610                       0.0000               0.0000     0.0003
+B: CAN + bulk Ethernet       2     reactive    36        0.5621        3301.7000      45364.6989                  1699.5643                       0.0000               0.0000     0.0004
+B: CAN + bulk Ethernet       3 conventional    36        0.6999        4155.7298      42374.4253                  2932.6677                       0.0085               0.0200     0.0004
+B: CAN + bulk Ethernet       3     governor    36        0.6999        6061.0484      66984.3595                  1624.5688                       0.0000               0.0000     0.0046
+B: CAN + bulk Ethernet       3     reactive    36        0.6999        6480.7133      74859.2040                  1621.7688                       0.0000               0.0000     0.0057
+B: CAN + bulk Ethernet       4 conventional    36        0.8156        6339.4495      48158.7153                  2928.0252                       0.0035               0.0100     0.0031
+B: CAN + bulk Ethernet       4     governor    36        0.8156        8040.0605      94682.7689                  1506.2710                       0.0000               0.0000     0.0234
+B: CAN + bulk Ethernet       4     reactive    36        0.8156        8040.0605      94682.7689                  1506.2710                       0.0000               0.0000     0.0234
+B: CAN + bulk Ethernet       5 conventional    36        0.9701       14664.6940      48366.5782                  4775.3174                       0.0093               0.0367     0.0108
+
+Share of runs the governor could guarantee:
+experiment              copies
+A: CAN only             1         1.0
+                        4         1.0
+                        8         1.0
+B: CAN + bulk Ethernet  1         1.0
+                        2         1.0
+                        3         1.0
+                        4         1.0
+                        5         0.0
+
+Done in 169 s. Results saved in 'results\road_robust\skip2/'.

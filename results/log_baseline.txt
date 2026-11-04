@@ -1,0 +1,26 @@
+      uniform  load 20%  mean latency     487.0 µs  TO util 0.00
+      uniform  load 30%  mean latency     543.1 µs  TO util 0.00
+      uniform  load 50%  mean latency     756.7 µs  TO util 0.01
+      uniform  load 70%  mean latency    1590.5 µs  TO util 0.03
+      uniform  load 90%  mean latency    5205.3 µs  TO util 0.10
+heterogeneous  load 20%  mean latency     485.6 µs  TO util 0.00
+heterogeneous  load 30%  mean latency     571.2 µs  TO util 0.00
+heterogeneous  load 50%  mean latency     829.4 µs  TO util 0.01
+heterogeneous  load 70%  mean latency    1607.7 µs  TO util 0.03
+heterogeneous  load 90%  mean latency    5875.9 µs  TO util 0.10
+       bursty  load 20%  mean latency    2668.6 µs  TO util 0.00
+       bursty  load 30%  mean latency    2822.9 µs  TO util 0.00
+       bursty  load 50%  mean latency    3910.8 µs  TO util 0.01
+       bursty  load 70%  mean latency    6722.5 µs  TO util 0.02
+       bursty  load 90%  mean latency   11711.2 µs  TO util 0.05
+        mixed  load 20%  mean latency     187.1 µs  TO util 0.01
+        mixed  load 30%  mean latency     486.6 µs  TO util 0.01
+        mixed  load 50%  mean latency    1251.2 µs  TO util 0.01
+        mixed  load 70%  mean latency    8760.0 µs  TO util 0.04
+        mixed  load 90%  mean latency   13985.0 µs  TO util 0.05
+
+Done in 50 s. Results saved in 'results/'.
+
+real	0m53.541s
+user	0m0.046s
+sys	0m0.000s

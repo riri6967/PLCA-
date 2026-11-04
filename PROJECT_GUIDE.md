@@ -103,8 +103,8 @@ PLCA-/
   run_tradeoff.py    cost of the guarantee, budget adaptation, sensitivity
   run_reference_models.py  gradient boosting and oracle reference models
   tests/             automatic checks (python -m unittest)
-  results/           outputs (created when you run; not uploaded to GitHub)
-  dataset/           downloaded datasets (not uploaded to GitHub)
+  results/           all outputs: figures, CSVs, trained models, run logs
+  dataset/           road.zip and the two papers, stored with Git LFS
 ```
 
 ---
@@ -113,18 +113,25 @@ PLCA-/
 
 Your project folder is `C:\Users\<you>\Downloads\PLCA-`.
 
-### 4.1 First time only
-You already have Python 3.12, VS Code and Git. If you ever need to start
-from scratch:
+### 4.1 First time on a new PC
+You need Python 3.12 and Git. Git LFS comes with Git for Windows. Then:
 
 ```
 cd %USERPROFILE%\Downloads
 git clone -b claude/great-archimedes-58j5pe https://github.com/riri6967/PLCA-.git
 cd PLCA-
+mkdir dataset\road
+tar -xf dataset\road.zip -C dataset\road
 python -m venv venv
 venv\Scripts\activate
 pip install -r requirements.txt
+python -m unittest
 ```
+
+The `results\` folder comes with the clone, so nothing needs re-running.
+If `dataset\road.zip` is only about 130 bytes, Git LFS did not download it:
+run `git lfs pull`. The unzipped data (3.1 GB) and `venv\` are not on GitHub:
+the commands above recreate them.
 
 ### 4.2 Every time you open a new Command Prompt
 ```
@@ -143,7 +150,7 @@ python -m unittest
 
 ### 4.4 Disk space
 About 2 GB in total: Python, VS Code and Git (~0.9 GB), libraries (~0.5 GB),
-ROAD dataset (~0.5 GB zipped, more unzipped), results (< 50 MB).
+ROAD dataset (0.6 GB zipped, 3.1 GB unzipped), results (about 30 MB).
 
 ---
 
@@ -418,6 +425,7 @@ on 10BASE-T1S is a practical substitute; say so in the paper.
 | `venv\Scripts\activate`: "The system cannot find the path specified" | You are in the wrong folder. `cd %USERPROFILE%\Downloads\PLCA-` first. If it still fails, run `python -m venv venv` then `pip install -r requirements.txt`. |
 | `tar: could not chdir to 'dataset\road'` | Create the folder first: `mkdir dataset\road` |
 | `git pull`: "Your local changes would be overwritten" | Run `git stash`, then `git pull`. |
+| Clone says Git LFS quota or budget exceeded | The free allowance is 10 GB of downloads a month. Try again next month, or copy `road.zip` by USB. |
 | `ModuleNotFoundError: No module named 'sklearn'` | `pip install -r requirements.txt` with `(venv)` active. |
 | A plot or CSV is missing | Run the script for that phase again; `results\` is created automatically. |
 | CarDS site gives `ERR_HTTP2_PROTOCOL_ERROR` | InPrivate window, another browser, turn off ad blockers or antivirus HTTPS scanning, or another network. CarDS is optional. |
