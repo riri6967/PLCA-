@@ -101,6 +101,8 @@ PLCA-/
   run_road.py        real traffic from the ROAD dataset (all ambient logs)
   run_road_tinyml.py TinyML trained and tested on real ROAD windows
   run_tradeoff.py    cost of the guarantee, budget adaptation, sensitivity
+  run_models.py      predictor comparison for the Work Plan
+  run_plan_eval.py   Work Plan baselines and ablation (Python, interim)
   run_reference_models.py  gradient boosting and oracle reference models
   tests/             automatic checks (python -m unittest)
   results/           all outputs: figures, CSVs, trained models, run logs
@@ -151,6 +153,49 @@ python -m unittest
 ### 4.4 Disk space
 About 2 GB in total: Python, VS Code and Git (~0.9 GB), libraries (~0.5 GB),
 ROAD dataset (0.6 GB zipped, 3.1 GB unzipped), results (about 30 MB).
+
+### 4.5 Continuing the Work Plan on another PC
+The Work Plan needs OMNeT++ and INET, which must be compiled. Get
+`PLCA_Work_Plan.pdf` onto that PC too: it is not in this repository.
+
+Needs: Windows with WSL2 Ubuntu 24.04 (or Linux), your Ubuntu password,
+at least 50 GB free, and 16 GB of RAM if possible. In Ubuntu:
+
+```
+sudo apt-get update
+sudo apt-get install -y build-essential clang lld gdb bison flex perl python3-pip python3-venv libxml2-dev zlib1g-dev doxygen graphviz
+mkdir -p ~/plca && cd ~/plca
+curl -LO https://github.com/omnetpp/omnetpp/releases/download/omnetpp-6.4.0/omnetpp-6.4.0-linux-x86_64.tgz
+curl -LO https://github.com/inet-framework/inet/releases/download/v4.7.0/inet-4.7.0-src.tgz
+tar xzf omnetpp-6.4.0-linux-x86_64.tgz
+tar xzf inet-4.7.0-src.tgz
+```
+
+Use OMNeT++ 6.4 with INET 4.7: INET 4.7 requires OMNeT++ 6.4 or later, and the
+PLCA model first appeared in INET 4.6, not 4.5 as the Work Plan says. Follow
+`INSTALL.md` in each folder to build, and turn Qtenv off if no display is
+needed. Then run `MultidropNetwork`, the first step of Phase 1.
+
+What is done for the Work Plan:
+
+* `plca_sim/plan.py`: standards-only governor (burst counts and node order),
+  hysteresis, override logging. This is Python, to be ported to C++.
+* `run_models.py`: tree, forest, tiny MLP (int8) and EWMA comparison. Results
+  are in `results/model_comparison.csv`.
+* `run_plan_eval.py`: baselines B1-B4, proposed, ablation, with Jain fairness,
+  warm-up and 95 % intervals. It was stopped before finishing, so it has no
+  results yet. These would be interim: the final numbers must come from OMNeT++.
+
+Still to do: Phases 1-5 in OMNeT++, CarDS and TOW-IDS traffic, the related-work
+table with the plan's five columns, the paper rewrite and the poster fixes.
+
+Questions for your supervisor before Phase 4:
+
+1. Which deadline? The July 2026 IEEE CFI says loop time is a rough rule of
+   thumb for latency. ROAD's critical IDs run at 100 Hz, which suggests about
+   10 ms, and conventional PLCA already meets 10 ms on that traffic.
+2. Standards-only or short deadlines? With 9 nodes, six sending full-size
+   frames, the standards-only design guarantees about 9.3 ms at best.
 
 ---
 

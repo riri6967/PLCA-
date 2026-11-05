@@ -46,6 +46,8 @@ class CyclePlan:
     # so nodes late in the TO order cannot be starved.
     reserved_node: int | None = None
     reserve_bt: float = 0.0
+    # Node IDs in TO order; None = 0, 1, ..., N-1.
+    order: tuple[int, ...] | None = None
 
 
 class Policy:

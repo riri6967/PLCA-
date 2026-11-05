@@ -59,6 +59,8 @@ class SimResult:
     # deadline (a miss) or not yet (outcome unknown, left out of the miss rate).
     critical_overdue: int = 0
     critical_censored: int = 0
+    # Bits of frames offered per node, for the fairness index.
+    offered_bits: list[int] = field(default_factory=list)
 
     @property
     def backlog(self) -> int:
@@ -91,6 +93,7 @@ def simulate(
         offered=sum(len(p) for p in pending),
         queue_sum=[0] * n_nodes,
         queue_samples=[0] * n_nodes,
+        offered_bits=[sum(f.size * 8 for f in p) for p in pending],
     )
 
     def enqueue(n: int, now: float) -> None:
@@ -140,7 +143,7 @@ def simulate(
             del since_anchor[a]
 
         t += cfg.beacon_bt
-        for n in range(n_nodes):
+        for n in plan.order or range(n_nodes):
             enqueue(n, t)
             q = ready[n]
             res.queue_sum[n] += len(q)
