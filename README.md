@@ -7,19 +7,74 @@ adaptive policy + deterministic safety governor) and compare the two.
 
 ## Status
 
-| Phase | Step | Status |
-|---|---|---|
-| 2 | 10BASE-T1S PLCA network model (1 coordinator + N nodes) | done |
-| 2 | Traffic scenarios: low, increasing, heterogeneous, bursty, mixed-criticality | done |
-| 2 | Monitoring of latency, jitter, throughput, bus/TO utilization, queues, loss | done |
-| 3 | Conventional PLCA baseline + plots | done |
-| 4 | TinyML network-state prediction (monitor, features, decision tree, C export) | done |
-| 5 | Adaptive policy engine + deterministic safety governor | done |
-| 6 | Conventional vs adaptive comparison | done (simulation) |
-| 7 | Real traffic: 12 ROAD logs, TinyML on real data, trade-off studies | done |
-| 8 | [Paper draft](https://claude.ai/artifact/Gp8QCyRSX1jDppPn7tdxH8) | first full draft |
+Done in simulation; nothing here ran on real 10BASE-T1S hardware.
+[Paper draft](https://claude.ai/artifact/Gp8QCyRSX1jDppPn7tdxH8).
 
-## Run it on Windows
+| Work Plan phase | Status |
+|---|---|
+| 0 Literature | done; a few sources were read as records or abstracts only (see the paper) |
+| 1 Setup | done: OMNeT++ 6.4.0 and INET 4.7.0 in WSL Ubuntu 24.04 |
+| 2 Baseline | done: S1-S4, 4 to 16 followers, 10 seeds |
+| 3 Dataset and TinyML | done: 467,844 windows, int8 MLP exported to C |
+| 4 Adaptive controller | done: `sim/AdaptivePlcaController.cc`, governor at cycle boundaries |
+| 5 Evaluation | done: B1-B4, P, ablation, sensitivity, 1,247 runs |
+| 6 Hardware | not done, optional in the plan |
+| 7 Paper | draft done; poster fixes still open |
+
+## Main results (OMNeT++, S4 mixed, 90 % load, 20 ms deadline, 10 seeds)
+
+| Design | Safety misses | Worst safety (ms) | p99 (ms) | Mean (ms) |
+|---|---|---|---|---|
+| B1 conventional | 20.0 % | 221.5 | 69.6 | 8.93 |
+| B2 best static | 0 | 14.7 | 17.8 | 3.11 |
+| B3 fixed priority | 0 | 8.0 | 19.1 | 2.53 |
+| B4 reactive EWMA + governor | 0 | 15.8 | 16.8 | 2.72 |
+| P TinyML + governor | 0 | 15.1 | 15.9 | 2.65 |
+| A1 P without governor | 0.073 % | 35.3 | 17.3 | 2.83 |
+
+* The governor is the useful part: 0 misses in all 480 governed comparison runs,
+  including random predictions, against 35.3 ms without it.
+* Prediction adds no detectable gain: P and B4 never differ significantly.
+* Adaptation helps little: p99 -16.6 % against B3 at 90 % load in S4, mean +4.6 %,
+  and no p99 gain on bursty traffic. PLCA wastes little idle time, so burst
+  changes move delay between nodes rather than add capacity.
+
+Everything is in `results/omnet/`; tables and figures in `results/omnet/figures/`.
+
+## Datasets and licences
+
+| Data | Where | Note |
+|---|---|---|
+| ROAD | `dataset/road.zip` (Git LFS) | Verma et al., PLOS ONE 2024 |
+| CarDS | `dataset/cards/`, not in Git | CC BY-SA 4.0; Hellemans et al., IEEE ACSAC 2025, doi:10.1109/ACSAC67867.2025.00069 |
+| TOW-IDS | not used | needs an IEEE DataPort subscription |
+
+`results/cards/` is derived from CarDS and is shared under CC BY-SA 4.0.
+`results/omnet/tinyml_dataset.csv.gz` is the simulated dataset the plan releases.
+Critical flows, deadlines and the 30 % bulk share are assumptions: no dataset gives them.
+
+## Reproduce the OMNeT++ results
+
+Run in WSL Ubuntu. `setup_omnet.sh` builds OMNeT++ and INET, 30-60 minutes and
+about 6 GB. Runs take about 45 s each on 12 cores with 10 workers.
+
+```
+bash sim/setup_omnet.sh
+cd sim
+python3 run_batch.py S4_Mixed     # one config; finished runs are skipped
+python3 summarize.py results/summary.csv --out results/summary_ci.csv
+```
+
+Then on Windows, from the repository root:
+
+```
+python -m ml.run_omnet_tinyml
+python -m analysis.plot_omnet
+python -m traffic.run_cards_profile
+python -m traffic.run_cards
+```
+
+## Cycle-level simulator: run it on Windows
 
 Open **Command Prompt** in the project folder, then run:
 
@@ -28,34 +83,34 @@ python -m venv venv
 venv\Scripts\activate
 pip install -r requirements.txt
 python -m unittest
-python run_baseline.py
+python -m analysis.run_baseline
 ```
 
 Results (CSV + PNG plots) are written to the `results\` folder.
-Use `python run_baseline.py --quick` for a fast check.
+Use `python -m analysis.run_baseline --quick` for a fast check.
 
 Phase 4 (TinyML), about 1 minute:
 
 ```
-python run_tinyml.py
+python -m ml.run_tinyml
 ```
 
 Phases 5-6 (adaptive PLCA vs conventional), about 2-4 minutes:
 
 ```
-python run_adaptive.py
+python -m analysis.run_adaptive
 ```
 
 Real traffic from the ROAD dataset (unzip it to `dataset\road\`):
 
 ```
-python run_road.py --seeds 5
-python run_road_tinyml.py
-python run_tradeoff.py
-python run_reference_models.py
+python -m traffic.run_road --seeds 5
+python -m ml.run_road_tinyml
+python -m analysis.run_tradeoff
+python -m ml.run_reference_models
 ```
 
-## Real traffic: ROAD CAN traces (`run_road.py`, `plca_sim/road.py`)
+## Real traffic: ROAD CAN traces (`traffic/run_road.py`, `plca_sim/road.py`)
 
 Replays all 12 attack-free ROAD logs (choose others with `--log`) on the
 10BASE-T1S zone. Each CAN frame keeps its real timestamp and becomes a
@@ -76,7 +131,7 @@ it refuses the 98 % load it cannot guarantee. Conventional PLCA: misses in
 cost at 2 ms: p99 of all frames doubles at 84 % load. Burst adaptation does
 not help on this traffic.
 
-## Phase 4: TinyML network-state prediction
+## Cycle-level simulator: TinyML network-state prediction
 
 * `plca_sim/monitor.py` records 15 cheap features every 5 ms (bus and TO
   utilization, arrival rate, queue lengths, critical frames waiting, cycle
@@ -98,7 +153,7 @@ remaining errors come mostly from the randomness of the traffic itself.
 Predictions alone are therefore not trusted blindly: the Phase 5 safety
 governor must enforce the deterministic guarantees whatever the model says.
 
-## Phase 5: adaptive policy engine + safety governor
+## Cycle-level simulator: adaptive policy engine + metered governor
 
 `plca_sim/adaptive.py`
 
@@ -118,7 +173,7 @@ governor must enforce the deterministic guarantees whatever the model says.
   conventional PLCA's own worst case. All nodes see the bus, so each node
   can enforce the budget locally.
 
-## Phase 6 results (`run_adaptive.py --seeds 5`, unseen seeds 200-204)
+## Cycle-level simulator results (`analysis/run_adaptive.py --seeds 5`, seeds 200-204)
 
 Mixed criticality: the governor guarantees a 1.9 ms bound for the 2 ms
 deadline. Measured worst critical latency is at most 1.50 ms at every load,
@@ -161,13 +216,18 @@ plca_sim/
   tinyml.py      Labelling, decision-tree training, export to C
   adaptive.py    Adaptive policy engine and safety governor
   road.py        ROAD candump reader and CAN -> 10BASE-T1S trace replay
-run_baseline.py  Runs all scenarios with conventional PLCA and plots results
-run_tinyml.py    Builds the dataset, trains and evaluates the TinyML model
-run_adaptive.py  Compares conventional, governor, reactive and TinyML policies
-run_road.py      Same comparison on real ROAD CAN traffic
-run_road_tinyml.py  TinyML trained and tested on real ROAD windows
-run_tradeoff.py  Cost of the guarantee, budget adaptation, sensitivity
-run_reference_models.py  Gradient boosting and oracle reference models
+  plan.py        Standards-only governor in Python
+sim/             OMNeT++ model
+  omnetpp.ini    All scenarios, baselines, ablation and sensitivity configs
+  AdaptivePlcaController.cc  Monitoring, TinyML, policy and governor (C++)
+  AdaptivePlca.*, ZonalSegment.ned  PLCA with a settable burst count; the network
+  run_batch.py, collect.py, summarize.py  Parallel runs and result reduction
+traffic/         run_road.py, run_cards_profile.py, run_cards.py
+ml/              run_tinyml.py, run_models.py, run_road_tinyml.py,
+                 run_reference_models.py, run_omnet_tinyml.py
+analysis/        run_baseline.py, run_adaptive.py, run_tradeoff.py,
+                 run_plan_eval.py, plot_omnet.py
+paper/           Phase 0 source notes
 tests/           Sanity checks
 ```
 

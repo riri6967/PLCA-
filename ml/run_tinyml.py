@@ -1,8 +1,8 @@
 """Phase 4: train and evaluate the TinyML network-state predictor.
 
 Usage (from the project folder, with the virtual environment active):
-    python run_tinyml.py            # full run (a few minutes)
-    python run_tinyml.py --quick    # short run to check everything works
+    python -m ml.run_tinyml            # full run (a few minutes)
+    python -m ml.run_tinyml --quick    # short run to check everything works
 
 Steps:
   1. Simulate conventional PLCA in all scenarios (incl. "dynamic") and record

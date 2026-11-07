@@ -95,15 +95,11 @@ PLCA-/
     tinyml.py        labelling, decision-tree training, export to C
     adaptive.py      adaptive policy engine + safety governor
     road.py          ROAD dataset reader and CAN -> 10BASE-T1S replay
-  run_baseline.py    Phase 3: conventional PLCA baseline
-  run_tinyml.py      Phase 4: TinyML predictor
-  run_adaptive.py    Phases 5-6: conventional vs adaptive
-  run_road.py        real traffic from the ROAD dataset (all ambient logs)
-  run_road_tinyml.py TinyML trained and tested on real ROAD windows
-  run_tradeoff.py    cost of the guarantee, budget adaptation, sensitivity
-  run_models.py      predictor comparison for the Work Plan
-  run_plan_eval.py   Work Plan baselines and ablation (Python, interim)
-  run_reference_models.py  gradient boosting and oracle reference models
+  sim/               OMNeT++ model, controller and batch runner
+  traffic/           ROAD and CarDS profiling and replay
+  ml/                predictors, dataset and C export
+  analysis/          baselines, comparisons and figures
+  paper/             Phase 0 source notes
   tests/             automatic checks (python -m unittest)
   results/           all outputs: figures, CSVs, trained models, run logs
   dataset/           road.zip and the two papers, stored with Git LFS
@@ -176,20 +172,12 @@ PLCA model first appeared in INET 4.6, not 4.5 as the Work Plan says. Follow
 `INSTALL.md` in each folder to build, and turn Qtenv off if no display is
 needed. Then run `MultidropNetwork`, the first step of Phase 1.
 
-What is done for the Work Plan:
+The Work Plan's phases are finished in simulation; see the README for status and
+results. Hardware (Phase 6) was not done, TOW-IDS was not used, and the poster
+fixes are still open. The paper's claim changed: the governor makes retuning
+safe, while prediction added no detectable gain over a moving average.
 
-* `plca_sim/plan.py`: standards-only governor (burst counts and node order),
-  hysteresis, override logging. This is Python, to be ported to C++.
-* `run_models.py`: tree, forest, tiny MLP (int8) and EWMA comparison. Results
-  are in `results/model_comparison.csv`.
-* `run_plan_eval.py`: baselines B1-B4, proposed, ablation, with Jain fairness,
-  warm-up and 95 % intervals. It was stopped before finishing, so it has no
-  results yet. These would be interim: the final numbers must come from OMNeT++.
-
-Still to do: Phases 1-5 in OMNeT++, CarDS and TOW-IDS traffic, the related-work
-table with the plan's five columns, the paper rewrite and the poster fixes.
-
-Questions for your supervisor before Phase 4:
+Questions for your supervisor:
 
 1. Which deadline? The July 2026 IEEE CFI says loop time is a rough rule of
    thumb for latency. ROAD's critical IDs run at 100 Hz, which suggests about
@@ -205,11 +193,11 @@ Questions for your supervisor before Phase 4:
 |---|---|---|---|
 | 1 | Literature review | section 3 of the paper | done; check items marked (abstract) or (from memory) |
 | 2 | 10BASE-T1S PLCA network model and traffic scenarios | `plca_sim/` | done |
-| 3 | Conventional PLCA baseline | `run_baseline.py` | done |
-| 4 | TinyML network-state prediction | `run_tinyml.py` | done |
+| 3 | Conventional PLCA baseline | `analysis/run_baseline.py` | done |
+| 4 | TinyML network-state prediction | `ml/run_tinyml.py` | done |
 | 5 | Adaptive policy engine + safety governor | `plca_sim/adaptive.py` | done |
-| 6 | Conventional vs adaptive comparison | `run_adaptive.py` | done (simulation) |
-| 7 | Real traffic (ROAD dataset) | `run_road.py`, `run_road_tinyml.py` | done, all 12 ambient logs |
+| 6 | Conventional vs adaptive comparison | `analysis/run_adaptive.py` | done (simulation) |
+| 7 | Real traffic (ROAD dataset) | `traffic/run_road.py`, `ml/run_road_tinyml.py` | done, all 12 ambient logs |
 | 8 | Write-up (paper / thesis) | [paper](https://claude.ai/artifact/Gp8QCyRSX1jDppPn7tdxH8) | first full draft done |
 
 ### Phase 1: literature review
@@ -239,7 +227,7 @@ fill section 8 of the poster ("Existing research works").
 
 ### Phase 3: conventional baseline (done)
 ```
-python run_baseline.py
+python -m analysis.run_baseline
 ```
 Output: `results\baseline_overview.png`, `baseline_mixed_criticality.png`,
 `baseline_results.csv`, `baseline_summary.csv`.
@@ -262,7 +250,7 @@ Key results (average of 3 runs):
 
 ### Phase 4: TinyML predictor (done)
 ```
-python run_tinyml.py
+python -m ml.run_tinyml
 ```
 * Every 5 ms the monitor records 15 cheap features: bus and TO utilization,
   arrival rate, queue lengths, critical frames waiting, cycle length, trends
@@ -294,7 +282,7 @@ Output: `tinyml_confusion_matrix.png`, `tinyml_timeline.png`,
 `tinyml_size_vs_accuracy.png`, `tinyml_per_scenario.png`,
 `tinyml_feature_importance.png`, `tinyml_metrics.csv`,
 `tinyml_model.joblib`, `plca_state_model.h`. The reference models come from
-`python run_reference_models.py` (`tinyml_reference_models.csv`).
+`python -m ml.run_reference_models` (`tinyml_reference_models.csv`).
 
 ### Phase 5: adaptive policy engine + safety governor (done)
 * **Policy engine:** low or medium state means normal PLCA. High state:
@@ -318,7 +306,7 @@ Output: `tinyml_confusion_matrix.png`, `tinyml_timeline.png`,
 
 ### Phase 6: conventional vs adaptive (done in simulation)
 ```
-python run_adaptive.py
+python -m analysis.run_adaptive
 ```
 Four policies on the same unseen traffic:
 * **conventional**: standard PLCA
@@ -363,11 +351,11 @@ dataset\road\__MACOSX                Mac leftovers (ignore)
 ```
 Run (about 10 minutes for all logs):
 ```
-python run_road.py --seeds 5
-python run_road_tinyml.py
-python run_tradeoff.py
-python run_road.py --deadline-ms 5 --model none --out results\road_robust\d5
-python run_road.py --critical-skip 2 --model none --out results\road_robust\skip2
+python -m traffic.run_road --seeds 5
+python -m ml.run_road_tinyml
+python -m analysis.run_tradeoff
+python -m traffic.run_road --deadline-ms 5 --model none --out results\road_robust\d5
+python -m traffic.run_road --critical-skip 2 --model none --out results\road_robust\skip2
 ```
 What it does:
 1. Reads each real CAN log (first 300 s) with real timestamps.
@@ -403,7 +391,7 @@ Results (12 logs x 5 seeds):
   synthetic-trained 77.8 %. In closed loop the ROAD-trained model changes
   p99 by less than 2 %.
 
-Trade-off studies (`run_tradeoff.py`):
+Trade-off studies (`analysis/run_tradeoff.py`):
 
 * Relaxing the deadline from 1.8 to 10 ms cuts non-critical latency by only
   6 %, so the budget is not the main cost.

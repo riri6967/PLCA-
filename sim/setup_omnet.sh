@@ -3,8 +3,9 @@
 # Safe to run again: finished steps are skipped and nothing is fetched twice.
 #
 #   bash sim/setup_omnet.sh
-set -euo pipefail
+set -eo pipefail
 
+HERE=$(cd "$(dirname "$0")" && pwd)
 ROOT=${PLCA_HOME:-$HOME/plca}
 OMNET=omnetpp-6.4.0
 INET=inet-4.7.0
@@ -15,6 +16,7 @@ INET_URL=https://github.com/inet-framework/inet/releases/download/v4.7.0/$INET-s
 ram_gb=$(awk '/MemTotal/ {print int($2 / 1048576)}' /proc/meminfo)
 JOBS=$(( ram_gb / 2 > 1 ? ram_gb / 2 : 1 ))
 [ "$JOBS" -gt "$(nproc)" ] && JOBS=$(nproc)
+echo "compile jobs: $JOBS"
 
 mkdir -p "$ROOT"
 cd "$ROOT"
@@ -31,37 +33,32 @@ fetch "$INET-src.tgz" "$INET_URL" "$INET"
 
 if [ ! -f "$OMNET/.plca_built" ]; then
     cd "$OMNET"
-    # No GUI: runs are command-line only, and the GUI libraries are large.
-    sed -i -E 's/^#?\s*WITH_QTENV=.*/WITH_QTENV=no/;
-               s/^#?\s*WITH_OSG=.*/WITH_OSG=no/;
-               s/^#?\s*WITH_OSGEARTH=.*/WITH_OSGEARTH=no/' configure.user
-    python3 -m venv .venv
-    .venv/bin/pip install --quiet --upgrade pip
-    [ -f python/requirements.txt ] && .venv/bin/pip install --quiet -r python/requirements.txt
-    # shellcheck disable=SC1091
-    source .venv/bin/activate
+    # Command-line runs only: no GUI, 3D view or embedded Python.
+    sed -i -E 's/^WITH_QTENV=.*/WITH_QTENV=no/;
+               s/^WITH_OSG=.*/WITH_OSG=no/;
+               s/^WITH_OSGEARTH=.*/WITH_OSGEARTH=no/;
+               s/^WITH_PYTHON=.*/WITH_PYTHON=no/;
+               s/^WITH_SCAVE_PYTHON_BINDINGS=.*/WITH_SCAVE_PYTHON_BINDINGS=no/' configure.user
+    # configure insists on 400 MB of Python packages only if the IDE is present.
+    if [ -d ide ]; then mv ide ide.unused; fi
     # shellcheck disable=SC1091
     source ./setenv -q
     ./configure
-    make -j"$JOBS" MODE=release
+    make -j"$JOBS" MODE=release base  # base = no sample programs
     touch .plca_built
     cd "$ROOT"
 fi
 
+# shellcheck disable=SC1091
+source "$ROOT/$OMNET/setenv" -q
+
 if [ ! -f "$INET/.plca_built" ]; then
-    # shellcheck disable=SC1091
-    source "$OMNET/.venv/bin/activate"
-    # shellcheck disable=SC1091
-    source "$OMNET/setenv" -q
     cd "$INET"
     # shellcheck disable=SC1091
     source ./setenv -q
-    # Wireless, routing and visualization code is not used on a wired PLCA bus.
-    if [ -f "$ROOT/.plca_features" ]; then
-        while read -r feature; do
-            opp_featuretool disable -f "$feature" || true
-        done < "$ROOT/.plca_features"
-    fi
+    # Wireless, routing and tutorial code is not used on a wired PLCA bus.
+    # shellcheck disable=SC2046
+    opp_featuretool disable -f $(tr -d '\r' < "$HERE/inet_features_off.txt")
     make makefiles
     make -j"$JOBS" MODE=release
     touch .plca_built

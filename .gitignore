@@ -5,3 +5,6 @@ __pycache__/
 data/
 # Unzip road.zip here; road.zip itself is in Git LFS
 dataset/road/
+dataset/cards/
+# Raw per-window logs; the same data is in results/omnet/tinyml_dataset.csv.gz
+results/omnet/windows/

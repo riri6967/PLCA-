@@ -1,8 +1,8 @@
 """Does the TinyML predictor work on real traffic?
 
 Usage (from the project folder, with the virtual environment active):
-    python run_road_tinyml.py          # after run_tinyml.py
-    python run_road_tinyml.py --quick
+    python -m ml.run_road_tinyml          # after run_tinyml.py
+    python -m ml.run_road_tinyml --quick
 
 Collects monitoring windows from replayed ROAD logs (conventional PLCA, same
 features and labels as run_tinyml.py), then asks:
@@ -12,7 +12,7 @@ features and labels as run_tinyml.py), then asks:
     seen (leave-one-log-out)?
 
 It also trains a final model on all logs except --holdout, for the closed-loop
-test on those logs: python run_road.py --model results/tinyml_model_road.joblib
+test on those logs: python -m traffic.run_road --model results/tinyml_model_road.joblib
 --log <held-out logs> --out results/road_heldout
 
 Outputs in `results/`: road_tinyml_metrics.csv, road_tinyml_per_log.csv,

@@ -1,8 +1,8 @@
 """What does the guarantee cost, and does adapting the budget help?
 
 Usage (from the project folder, with the virtual environment active):
-    python run_tradeoff.py            # after run_tinyml.py
-    python run_tradeoff.py --quick
+    python -m analysis.run_tradeoff            # after run_tinyml.py
+    python -m analysis.run_tradeoff --quick
 
 Three studies on the mixed-criticality scenario:
   1. deadline  how much non-critical latency the guarantee costs as the

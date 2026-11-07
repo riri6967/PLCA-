@@ -1,9 +1,9 @@
 """Real-traffic scenario: replay ROAD CAN traces on a 10BASE-T1S zone.
 
 Usage (from the project folder, with the virtual environment active):
-    python run_road.py                       # all ROAD ambient logs
-    python run_road.py --log "dataset\\road\\road\\ambient\\ambient_dyno_drive_winter.log"
-    python run_road.py --quick
+    python -m traffic.run_road                       # all ROAD ambient logs
+    python -m traffic.run_road --log "dataset\\road\\road\\ambient\\ambient_dyno_drive_winter.log"
+    python -m traffic.run_road --quick
 
 Each trace is replayed several times with independent time offsets (= the
 zone controller aggregates that many CAN segments) and the same four

@@ -3,8 +3,8 @@
 These are interim results: the plan's final numbers must come from OMNeT++/INET.
 
 Usage (after run_tinyml.py):
-    python run_plan_eval.py          # 10 seeds of 20 s, first 2 s discarded
-    python run_plan_eval.py --quick
+    python -m analysis.run_plan_eval          # 10 seeds of 20 s, first 2 s discarded
+    python -m analysis.run_plan_eval --quick
 
 Safety flows: 2 nodes, 64 bytes every 1 ms, deadline 10 ms. The standards-only
 governor cannot guarantee less on this segment (run_plan_eval prints why).

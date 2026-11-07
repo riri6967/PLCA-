@@ -1,8 +1,8 @@
 """Phase 2-3: measure conventional PLCA in every scenario and plot the results.
 
 Usage (from the project folder, with the virtual environment active):
-    python run_baseline.py            # full run (a few minutes)
-    python run_baseline.py --quick    # short run to check everything works
+    python -m analysis.run_baseline            # full run (a few minutes)
+    python -m analysis.run_baseline --quick    # short run to check everything works
 
 Outputs go to the `results/` folder:
     results/baseline_results.csv      one row per scenario / load / seed

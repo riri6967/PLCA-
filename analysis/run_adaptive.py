@@ -1,9 +1,9 @@
 """Phases 5-6: compare conventional PLCA with the self-adaptive framework.
 
 Usage (from the project folder, with the virtual environment active):
-    python run_tinyml.py              # once, to train the TinyML model
-    python run_adaptive.py            # full comparison (a few minutes)
-    python run_adaptive.py --quick    # short run to check everything works
+    python -m ml.run_tinyml              # once, to train the TinyML model
+    python -m analysis.run_adaptive            # full comparison (a few minutes)
+    python -m analysis.run_adaptive --quick    # short run to check everything works
 
 Policies compared on the same traffic (unseen random seeds 200+):
     conventional  standard PLCA, 1 frame per TO
